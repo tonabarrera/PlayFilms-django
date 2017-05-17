@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Playfilms</title>
+</head>
+<body>
+    <div>
+        {% if is_auth %}
+            {{ name }}, <a href="">Logout</a>
+        {% else %}
+            <a href="">Login</a>
+        {% endif %}
+    </div>
+    <div>
+        <form action="" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit"/>
+        </form>
+    </div>
+</body>
+</html>
