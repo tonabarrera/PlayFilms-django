@@ -1,0 +1,17 @@
+--SABADO
+
+- buscar
+- agregar a favoritos
+- puntuar
+- calcular promedio de la serie
+
+-DOMINGO
+
+- cambio de datos de usuario
+- alta usuario
+- redireccionar en el login de acuerdo al tipo de usuario
+- validacion de tarjetas de credito
+
+--TRIVIAL
+- diseño
+- mejor validacion en la parte de series y peliculas (modelos)
