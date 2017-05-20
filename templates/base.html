@@ -10,9 +10,9 @@
     <div>PlayFilms</div>
     <div>
         {% if data.is_auth %}
-            {{ data.username }}, <a href="{% url 'user:logout' %}">Logout</a>
-        {% else %}
-            <a href="{% url 'user:login' %}">Login</a>
+            <input id="buscar" type="text"> <input type="submit" value="Buscar">
+            <a href="">favoritos</a>
+            <a href="{{ data.username }}"></a>, <a href="{% url 'user:logout' %}">Logout</a>
         {% endif %}
     </div>
 </header>

@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.core.validators import RegexValidator
 from django.db import models
 
 # Create your models here.
@@ -29,8 +30,8 @@ class UserFavorites(models.Model):
 
 
 class UserCard(models.Model):
-    number = models.PositiveIntegerField()
+    number = models.CharField(max_length=19, validators=[RegexValidator(r'^\d{1,10}$')])
     owner = models.CharField(max_length=45)
     due_date = models.DateField()
-    cvv = models.PositiveIntegerField()
-    user = models.ForeignKey(User)
+    cvv = models.CharField(max_length=4, validators=[RegexValidator(r'^\d{1,10}$')])
+    user = models.ForeignKey(User, on_delete=models.CASCADE)

@@ -8,6 +8,7 @@ from django.views.generic import FormView, RedirectView, ListView
 
 from catalogue.models import Content
 
+
 class LoginView(FormView):
     template_name = 'login.html'
     form_class = AuthenticationForm
@@ -25,6 +26,7 @@ class LoginView(FormView):
     def form_valid(self, form):
         login(self.request, form.get_user())
         return super(LoginView, self).form_valid(form)
+
 
 def logout_view(request):
     logout(request)

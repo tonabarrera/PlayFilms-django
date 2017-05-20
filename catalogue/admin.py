@@ -8,6 +8,7 @@ from catalogue.models import Content, Actor, Category, Episode
 class ContentAdmin(admin.ModelAdmin):
     list_display = ('title', 'score', 'type_of_content', 'category',)
 
+
 @admin.register(Actor)
 class ActorAdmin(admin.ModelAdmin):
     pass

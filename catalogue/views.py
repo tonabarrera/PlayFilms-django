@@ -6,6 +6,7 @@ from django.views.generic import ListView
 
 from catalogue.models import Content, Episode
 
+
 def cargar_info_usuario(request):
     is_auth = False
     username = None
@@ -18,26 +19,30 @@ def cargar_info_usuario(request):
     }
     return data
 
+
 @login_required(login_url='/user/login/')
 def content_list(request):
     content = Content.objects.all()
     data = cargar_info_usuario(request)
-    return render(request, 'catalogo.html', {'content': content, 'data':data})
+    return render(request, 'catalogo.html', {'content': content, 'data': data})
+
 
 @login_required(login_url='/user/login/')
 def film_detail(request, pk):
     film = Content.objects.get(pk=pk)
     data = cargar_info_usuario(request)
-    return render(request, 'pelicula.html', {'film': film, 'data':data})
+    return render(request, 'pelicula.html', {'film': film, 'data': data})
+
 
 @login_required(login_url='/user/login/')
 def serie_detail(request, pk):
     serie = Content.objects.get(pk=pk)
     data = cargar_info_usuario(request)
-    return render(request, 'serie.html', {'serie': serie, 'data':data})
+    return render(request, 'serie.html', {'serie': serie, 'data': data})
+
 
 @login_required(login_url='/user/login/')
 def episode_detail(request, pk):
     episode = Episode.objects.get(pk=pk)
     data = cargar_info_usuario(request)
-    return render(request, 'episode.html', {'episode': episode, 'data':data})
+    return render(request, 'episode.html', {'episode': episode, 'data': data})
