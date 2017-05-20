@@ -13,7 +13,8 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User)
     type_of_user = models.IntegerField(choices=type_of_user_choices)
     avatar = models.ImageField(upload_to='avatars', blank=True)
-    favorites = models.ManyToManyField()
+    def email(self):
+        return self.user.email
 
 
 class UserContent(models.Model):

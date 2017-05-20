@@ -1,9 +1,10 @@
 from django.conf.urls import url
-from django.views.generic import RedirectView
 
-from catalogue.views import ContentListView
-from userprofiles.views import LoginView, LoginRedirectView
+from catalogue import views
 
 urlpatterns = [
-    url(r'^home/$', ContentListView.as_view(), name='home'),
+    url(r'^$', views.content_list),
+    url(r'^pelicula/(?P<pk>[0-9]+)/$', views.film_detail, name='pelicula'),
+    url(r'^serie/(?P<pk>[0-9]+)/$', views.serie_detail, name='serie'),
+    url(r'^episode/(?P<pk>[0-9]+)/$', views.episode_detail, name='episode'),
 ]

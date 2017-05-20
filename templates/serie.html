@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+    <p>{{ serie.title }}</p>
+    <p>{{ serie.score }}</p>
+    <p>{{ serie.category }}</p>
+    <p>{{ serie.get_type_of_content_display }}</p>
+    <p>Actores: </p>
+    <ul>
+        {% for actor in serie.actors.all %}
+            <li>{{ actor.name }} {{ actor.role }}</li>
+        {% endfor %}
+    </ul>
+    <p>Episodios</p>
+    <ol>
+    {% for episode in serie.episode_set.all %}
+        <li><a href="{% url 'catalogue:episode' pk=episode.pk %}">{{ episode.title }}</a></li>
+    {% endfor %}
+    </ol>
+
+{% endblock %}

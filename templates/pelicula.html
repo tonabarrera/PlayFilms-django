@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+    <p>{{ film.title }}</p>
+    <p>{{ film.score }}</p>
+    <p>{{ film.category }}</p>
+    <p>{{ film.get_type_of_content_display }}</p>
+    <p>Actores: </p>
+    <ul>
+        {% for actor in film.actors.all %}
+            <li>{{ actor.name }} {{ actor.role }}</li>
+        {% endfor %}
+    </ul>
+    <video controls width="500">
+        <source src="{{ film.content_file.url }}" type="video/mp4">
+        Your browser does not support the video element.
+    </video>
+{% endblock %}

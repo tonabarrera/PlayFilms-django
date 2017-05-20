@@ -1,12 +1,14 @@
 from django.contrib import admin
 
 # Register your models here.
+from django.contrib.auth.models import Group
+
 from userprofiles.models import UserProfile, UserContent, UserFavorites, UserCard
 
 
 @admin.register(UserProfile)
 class UserProfileAdmin(admin.ModelAdmin):
-    list_display = ('user', 'type_of_user')
+    list_display = ('user', 'email', 'type_of_user')
 
 
 @admin.register(UserContent)
@@ -22,3 +24,5 @@ class UserFavoriteAdmin(admin.ModelAdmin):
 @admin.register(UserCard)
 class UserCardAdmin(admin.ModelAdmin):
     pass
+
+admin.site.unregister(Group)

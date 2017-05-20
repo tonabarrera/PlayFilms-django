@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+    <p>{{ episode.serie }}</p>
+    <p>{{ episode.title }}</p>
+    <p>Numero de capitulo:{{ episode.order }}</p>
+    <video controls width="500">
+        <source src="{{ episode.episode_file.url }}" type="video/mp4">
+        Your browser does not support the video element.
+    </video>
+{% endblock %}

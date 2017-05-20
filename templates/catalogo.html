@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+{% for element in content %}
+    <div style="border:1px solid black;">
+        {% if element.type_of_content == 1 %}
+        <a href="{% url 'catalogue:pelicula' pk=element.pk %}">{{ element }}</a>
+        {% else %}
+        <a href="{% url 'catalogue:serie' pk=element.pk %}">{{ element }}</a>
+        {% endif %}
+
+        <p>{{ element.score }}</p>
+        <figure>
+            <img src="{{ element.cover.url }}" alt="{{ element }}" width="200">
+        </figure>
+        <p>{{element.category}}</p>
+        {% if element.type_of_content == 1 %}
+        <p>Pelicula</p>
+        {% else %}
+        <p>Serie</p>
+        {% endif %}
+    </div>
+{% endfor %}
+{% endblock %}

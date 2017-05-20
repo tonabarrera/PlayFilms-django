@@ -46,7 +46,7 @@ class Episode(models.Model):
     title = models.CharField(max_length=100)
     order = models.PositiveIntegerField()
     episode_file = models.FileField(upload_to='content')
-    serie = models.ForeignKey(Content)
+    serie = models.ForeignKey(Content, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.title

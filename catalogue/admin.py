@@ -6,7 +6,7 @@ from catalogue.models import Content, Actor, Category, Episode
 
 @admin.register(Content)
 class ContentAdmin(admin.ModelAdmin):
-    list_display = ('title', 'score', 'type_of_content', 'category', 'player')
+    list_display = ('title', 'score', 'type_of_content', 'category',)
 
 @admin.register(Actor)
 class ActorAdmin(admin.ModelAdmin):
@@ -20,4 +20,4 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Episode)
 class EpisodeAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('title', 'order', 'serie',)
