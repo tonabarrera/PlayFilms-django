@@ -6,7 +6,16 @@
     <title>PlayFilms</title>
 </head>
 <body>
-<header>Aqui va a ir un header bien chido</header>
+<header>
+    <div>PlayFilms</div>
+    <div>
+        {% if data.is_auth %}
+            {{ data.username }}, <a href="{% url 'user:logout' %}">Logout</a>
+        {% else %}
+            <a href="{% url 'user:login' %}">Login</a>
+        {% endif %}
+    </div>
+</header>
     {% block content %}
     {% endblock %}
 </body>
