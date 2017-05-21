@@ -38,10 +38,7 @@ def buscar(request):
 def content_list(request):
     data = cargar_info_usuario(request)
     content = buscar(request)
-    busqueda = False
-    if request.GET.get('q', None) is not None:
-        busqueda = True
-    return render(request, 'catalogo.html', {'catalogue': content, 'data': data, 'busqueda':busqueda})
+    return render(request, 'catalogo.html', {'catalogue': content, 'data': data})
 
 
 @login_required(login_url='/user/login/')
@@ -49,7 +46,6 @@ def film_detail(request, pk):
     film = Content.objects.get(pk=pk)
     data = cargar_info_usuario(request)
     temp_user = request.user.userprofile
-    History.objects.filter(user=temp_user, content=film, is_favorite=True).exists()
     if History.objects.filter(user=temp_user, content=film, is_favorite=True).exists():
         data['fav_submit'] = 'Quitar de favoritos'
     else:
@@ -97,10 +93,10 @@ def agregar_favorito_view(request):
     if request.method == 'GET':
         pk = int(request.GET.get('film', None))
         if pk is not None:
-            film = Content.objects.filter(id=pk)[0]
+            film = Content.objects.get(id=pk)
             temp_user = request.user.userprofile
             if temp_user.favorites.filter(id=pk).exists():
-                history = History.objects.filter(user=temp_user, content=film)[0]
+                history = History.objects.get(user=temp_user, content=film)
                 history.is_favorite = not history.is_favorite
                 data = {'favorito': history.is_favorite}
                 history.save()
@@ -111,7 +107,20 @@ def agregar_favorito_view(request):
     return JsonResponse(data)
 
 def puntuar_view(request):
-    data = {'error': 'error'}
+    data = {'ok': False}
     if request.method == 'GET':
         pk = int(request.GET.get('film', None))
+        score = int(request.GET.get('calificacion', None))
+        if (pk and score) is not None:
+            film = Content.objects.get(id=pk)
+            temp_user = request.user.userprofile
+            if temp_user.favorites.filter(id=pk).exists():
+                history = History.objects.get(user=temp_user, content=film)
+                history.score = score
+                history.save()
+            else:
+                history = History.objects.create(user=temp_user, content=film, score=score)
+                history.save()
+            data['puntaje'] = Content.objects.get(id=pk).score
+            data['ok'] = True
     return JsonResponse(data)

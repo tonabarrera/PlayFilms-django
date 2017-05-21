@@ -30,6 +30,9 @@ class Content(models.Model):
     category = models.ForeignKey(Category)
     cover = models.ImageField(upload_to='covers', blank=True)
 
+    class Meta():
+        ordering = ['title', 'score']
+
     def __str__(self):
         return self.title
 

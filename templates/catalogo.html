@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-    {% if catalogue.count == 0 and busqueda%}
+    {% if catalogue.count == 0%}
         <p>No se encontraron resultados</p>
     {% endif %}
 {% for element in catalogue %}

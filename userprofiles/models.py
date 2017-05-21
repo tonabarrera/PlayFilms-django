@@ -3,6 +3,8 @@ from django.core.validators import RegexValidator
 from django.db import models
 
 # Create your models here.
+from django.db.models import Avg
+
 from catalogue.models import Content
 
 
@@ -27,6 +29,13 @@ class History(models.Model):
     content = models.ForeignKey(Content, on_delete=models.CASCADE)
     score = models.PositiveIntegerField(blank=True, default=5)
     is_favorite = models.BooleanField(default=False)
+
+    def save(self, *args, **kwargs):
+        super(History, self).save(*args, **kwargs)
+        c = self.content
+        c.score = c.history_set.aggregate(Avg('score'))['score__avg']
+        c.save()
+
 
 class CreditCard(models.Model):
     number = models.CharField(max_length=19, validators=[RegexValidator(r'^\d{1,10}$')])

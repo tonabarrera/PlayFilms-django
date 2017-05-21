@@ -19,7 +19,7 @@
         <input type="submit" id="submit-favorito" value="{{ data.fav_submit }}">
     </form>
     <form action="/puntuar" method="GET", id="puntuar">
-        <input type="number" min="1" max="10" id="calificacion">
+        <input type="number" min="0" max="10" id="calificacion" required>
         <input type="text" value="{{ film.id }}" id="calificacion-id" hidden>
         <input type="submit" value="Calificar">
     </form>
@@ -52,8 +52,8 @@
                 data: {"film": $('#calificacion-id').val(),
                     "calificacion": $('#calificacion').val()},
                 success: function (json) {
-                    console.log("Promedio: " + json.promedio);
-                    $('#puntaje').text(json.promedio);
+                    console.log("It works?: " + json.ok);
+                    $('#puntaje').text(json.puntaje);
                 },
                 error: function (xhr, errmsg, err) {
                     consolo.log("ERROR: " + err);

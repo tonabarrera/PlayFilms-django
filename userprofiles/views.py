@@ -53,7 +53,7 @@ class FavoritesListView(LoginRequiredMixin, ListView):
     login_url = '/user/login'
 
     def get_queryset(self):
-        queryset = self.model.objects.filter(userprofile__user__username=self.request.user.username)
+        queryset = self.model.objects.filter(userprofile__user=self.request.user, history__is_favorite=True)
         return queryset
 
     def get_context_data(self, **kwargs):
