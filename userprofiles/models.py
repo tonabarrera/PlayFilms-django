@@ -25,7 +25,6 @@ class History(models.Model):
     content = models.ForeignKey(Content)
     score = models.PositiveIntegerField(blank=True)
 
-
 class UserCard(models.Model):
     number = models.CharField(max_length=19, validators=[RegexValidator(r'^\d{1,10}$')])
     owner = models.CharField(max_length=45)

@@ -61,3 +61,4 @@ class FavoritesListView(LoginRequiredMixin, ListView):
         data = cargar_info_usuario(self.request)
         context['data'] = data
         return context
+

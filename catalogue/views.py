@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from django.shortcuts import render
 
 from catalogue.models import Content, Episode
@@ -46,6 +47,11 @@ def content_list(request):
 def film_detail(request, pk):
     film = Content.objects.get(pk=pk)
     data = cargar_info_usuario(request)
+    if request.user.userprofile.favorites.filter(id=pk).exists():
+        data['fav_submit'] = 'Quitar de favoritos'
+    else:
+        data['fav_submit'] = 'Agregar a favoritos'
+
     return render(request, 'pelicula.html', {'film': film, 'data': data})
 
 
@@ -82,3 +88,23 @@ def episode_detail(request, pk):
 #         data = cargar_info_usuario(self.request)
 #         context['data'] = data
 #         return context
+
+def agregar_favorito_view(request):
+    data = {'error': 'error'}
+    if request.method == 'GET':
+        pk = int(request.GET.get('film', None))
+        if pk is not None:
+            film = Content.objects.filter(id=pk)
+            if request.user.userprofile.favorites.filter(id=pk).exists():
+                request.user.userprofile.favorites.remove(film[0])
+                data = {'favorito': False}
+            else:
+                data = {'favorito': True}
+                request.user.userprofile.favorites.add(film[0])
+    return JsonResponse(data)
+
+def puntuar_view(request):
+    data = {'error': 'error'}
+    if request.method == 'GET':
+        pk = int(request.GET.get('film', None))
+    return JsonResponse(data)

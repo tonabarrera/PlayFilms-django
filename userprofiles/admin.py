@@ -3,7 +3,7 @@ from django.contrib import admin
 # Register your models here.
 from django.contrib.auth.models import Group
 
-from userprofiles.models import UserProfile, History, UserCard
+from userprofiles.models import UserProfile, History, CreditCard
 
 
 @admin.register(UserProfile)
@@ -16,8 +16,8 @@ class UserHistoryAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(UserCard)
-class UserCardAdmin(admin.ModelAdmin):
+@admin.register(CreditCard)
+class CreditCardAdmin(admin.ModelAdmin):
     pass
 
 admin.site.unregister(Group)
