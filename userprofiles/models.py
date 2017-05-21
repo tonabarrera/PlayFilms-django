@@ -14,18 +14,19 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User)
     type_of_user = models.IntegerField(choices=type_of_user_choices)
     avatar = models.ImageField(upload_to='avatars', blank=True)
-    favorites = models.ManyToManyField(Content)
+    favorites = models.ManyToManyField(Content, through='History')
 
     def email(self):
         return self.user.email
 
 
 class History(models.Model):
-    user = models.ForeignKey(User)
-    content = models.ForeignKey(Content)
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    content = models.ForeignKey(Content, on_delete=models.CASCADE)
     score = models.PositiveIntegerField(blank=True)
+    is_favorite = models.BooleanField(default=False)
 
-class UserCard(models.Model):
+class CreditCard(models.Model):
     number = models.CharField(max_length=19, validators=[RegexValidator(r'^\d{1,10}$')])
     owner = models.CharField(max_length=45)
     due_date = models.DateField()
