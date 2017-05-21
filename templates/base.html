@@ -8,12 +8,14 @@
 </head>
 <body>
 <header>
-    <div>PlayFilms</div>
+    <div><a href="{%  url 'catalogue:content' %}">PlayFilms</a></div>
     <div>
         {% if data.is_auth %}
-            <input id="buscar" type="text"> <input type="submit" value="Buscar">
-            <a href="">favoritos</a>
-            <a href="{{ data.username }}"></a>, <a href="{% url 'user:logout' %}">Logout</a>
+            <form action="{%  url 'catalogue:content' %}" method="get">
+                <input id="buscar" type="search" name="q"><input type="submit" value="Buscar">
+            </form>
+            <a href="{% url 'user:favorites' %}">favoritos</a>
+            <a href="">{{ data.username }}</a>, <a href="{% url 'user:logout' %}">Logout</a>
         {% endif %}
     </div>
 </header>

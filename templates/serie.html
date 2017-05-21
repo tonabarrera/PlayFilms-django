@@ -16,5 +16,12 @@
         <li><a href="{% url 'catalogue:episode' pk=episode.pk %}">{{ episode.title }}</a></li>
     {% endfor %}
     </ol>
-
+    <form action="/favoritos" method="post">
+        <input type="text" value="0" hidden>
+        <input type="submit" value="Agregar a favoritos">
+    </form>
+    <form action="/calificar" method="post">
+        <input type="number" min="1" max="10">
+        <input type="submit" value="Calificar">
+    </form>
 {% endblock %}

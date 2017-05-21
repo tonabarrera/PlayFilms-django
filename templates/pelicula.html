@@ -14,4 +14,12 @@
         <source src="{{ film.content_file.url }}" type="video/mp4">
         Your browser does not support the video element.
     </video>
+    <form action="/favoritos" method="post">
+        <input type="text" value="0" hidden>
+        <input type="submit" value="Agregar a favoritos">
+    </form>
+    <form action="/calificar" method="post">
+        <input type="number" min="1" max="10">
+        <input type="submit" value="Calificar">
+    </form>
 {% endblock %}

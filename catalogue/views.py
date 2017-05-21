@@ -1,10 +1,10 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
-# Create your views here.
-from django.views.generic import ListView
-
 from catalogue.models import Content, Episode
+
+
+# Create your views here.
 
 
 def cargar_info_usuario(request):
@@ -19,12 +19,27 @@ def cargar_info_usuario(request):
     }
     return data
 
+def buscar(request):
+    content = None
+    name = None
+
+    if request.method == 'GET':
+        name = request.GET.get('q', None)
+        if name is not None:
+            print(name)
+            content = Content.objects.filter(title__contains=name)
+    if name is None:
+        content = Content.objects.all()
+    return content
 
 @login_required(login_url='/user/login/')
 def content_list(request):
-    content = Content.objects.all()
     data = cargar_info_usuario(request)
-    return render(request, 'catalogo.html', {'content': content, 'data': data})
+    content = buscar(request)
+    busqueda = False
+    if request.GET.get('q', None) is not None:
+        busqueda = True
+    return render(request, 'catalogo.html', {'catalogue': content, 'data': data, 'busqueda':busqueda})
 
 
 @login_required(login_url='/user/login/')
@@ -46,3 +61,24 @@ def episode_detail(request, pk):
     episode = Episode.objects.get(pk=pk)
     data = cargar_info_usuario(request)
     return render(request, 'episode.html', {'episode': episode, 'data': data})
+
+
+# class ContentListView(LoginRequiredMixin, ListView):
+#     model = Content
+#     template_name = 'catalogo.html'
+#     context_object_name = 'catalogue'
+#     login_url = '/user/login'
+#
+#     def get_queryset(self):
+#         if self.kwargs.get('name'):
+#             queryset = self.model.objects.filter(title__contains=self.kwargs['name'])
+#         else:
+#             queryset = super(ContentListView, self).get_queryset()
+#         return queryset
+#
+#     def get_context_data(self, **kwargs):
+#         context = super(ContentListView, self).get_context_data(**kwargs)
+#         context['busqueda'] = True
+#         data = cargar_info_usuario(self.request)
+#         context['data'] = data
+#         return context

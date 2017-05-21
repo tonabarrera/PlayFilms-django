@@ -14,19 +14,16 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User)
     type_of_user = models.IntegerField(choices=type_of_user_choices)
     avatar = models.ImageField(upload_to='avatars', blank=True)
+    favorites = models.ManyToManyField(Content)
+
     def email(self):
         return self.user.email
 
 
-class UserContent(models.Model):
+class History(models.Model):
     user = models.ForeignKey(User)
     content = models.ForeignKey(Content)
-    score = models.PositiveIntegerField()
-
-
-class UserFavorites(models.Model):
-    user = models.ForeignKey(User)
-    content = models.ForeignKey(Content)
+    score = models.PositiveIntegerField(blank=True)
 
 
 class UserCard(models.Model):

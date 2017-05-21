@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
-{% for element in content %}
+    {% if catalogue.count == 0 and busqueda%}
+        <p>No se encontraron resultados</p>
+    {% endif %}
+{% for element in catalogue %}
     <div style="border:1px solid black;">
         {% if element.type_of_content == 1 %}
         <a href="{% url 'catalogue:pelicula' pk=element.pk %}">{{ element }}</a>

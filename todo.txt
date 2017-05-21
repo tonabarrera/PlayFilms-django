@@ -1,7 +1,6 @@
 --SABADO
 
-- buscar
-- agregar a favoritos
+- agregar a favoritos (mostrar favoritos)
 - puntuar
 - calcular promedio de la serie
 
