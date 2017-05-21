@@ -6,6 +6,7 @@ from catalogue.models import Content, Episode
 
 
 # Create your views here.
+from userprofiles.models import History
 
 
 def cargar_info_usuario(request):
@@ -47,7 +48,9 @@ def content_list(request):
 def film_detail(request, pk):
     film = Content.objects.get(pk=pk)
     data = cargar_info_usuario(request)
-    if request.user.userprofile.favorites.filter(id=pk).exists():
+    temp_user = request.user.userprofile
+    History.objects.filter(user=temp_user, content=film, is_favorite=True).exists()
+    if History.objects.filter(user=temp_user, content=film, is_favorite=True).exists():
         data['fav_submit'] = 'Quitar de favoritos'
     else:
         data['fav_submit'] = 'Agregar a favoritos'
@@ -94,13 +97,17 @@ def agregar_favorito_view(request):
     if request.method == 'GET':
         pk = int(request.GET.get('film', None))
         if pk is not None:
-            film = Content.objects.filter(id=pk)
-            if request.user.userprofile.favorites.filter(id=pk).exists():
-                request.user.userprofile.favorites.remove(film[0])
-                data = {'favorito': False}
+            film = Content.objects.filter(id=pk)[0]
+            temp_user = request.user.userprofile
+            if temp_user.favorites.filter(id=pk).exists():
+                history = History.objects.filter(user=temp_user, content=film)[0]
+                history.is_favorite = not history.is_favorite
+                data = {'favorito': history.is_favorite}
+                history.save()
             else:
                 data = {'favorito': True}
-                request.user.userprofile.favorites.add(film[0])
+                history = History.objects.create(user=temp_user, content=film, is_favorite=True)
+                history.save()
     return JsonResponse(data)
 
 def puntuar_view(request):

@@ -18,12 +18,14 @@ class UserProfile(models.Model):
 
     def email(self):
         return self.user.email
+    def __str__(self):
+        return self.user.username
 
 
 class History(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     content = models.ForeignKey(Content, on_delete=models.CASCADE)
-    score = models.PositiveIntegerField(blank=True)
+    score = models.PositiveIntegerField(blank=True, default=5)
     is_favorite = models.BooleanField(default=False)
 
 class CreditCard(models.Model):

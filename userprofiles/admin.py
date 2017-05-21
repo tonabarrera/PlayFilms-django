@@ -13,8 +13,7 @@ class UserProfileAdmin(admin.ModelAdmin):
 
 @admin.register(History)
 class UserHistoryAdmin(admin.ModelAdmin):
-    pass
-
+    list_display = ('user', 'content', 'is_favorite', 'score')
 
 @admin.register(CreditCard)
 class CreditCardAdmin(admin.ModelAdmin):
