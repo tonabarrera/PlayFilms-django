@@ -14,8 +14,8 @@ class UserProfile(models.Model):
         (2, 'Estandar')
     )
     user = models.OneToOneField(User)
-    type_of_user = models.IntegerField(choices=type_of_user_choices)
-    avatar = models.ImageField(upload_to='avatars', blank=True)
+    type_of_user = models.IntegerField(choices=type_of_user_choices, default=2)
+    avatar = models.ImageField(upload_to='avatars', blank=True, default='/media/avatars/default_app_avatar.png')
     favorites = models.ManyToManyField(Content, through='History')
 
     def email(self):
@@ -33,7 +33,7 @@ class History(models.Model):
     def save(self, *args, **kwargs):
         super(History, self).save(*args, **kwargs)
         c = self.content
-        c.score = c.history_set.aggregate(Avg('score'))['score__avg']
+        c.score = round(c.history_set.aggregate(Avg('score'))['score__avg'], 1)
         c.save()
 
 

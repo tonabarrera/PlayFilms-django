@@ -8,6 +8,8 @@ from django.shortcuts import render, redirect
 from django.views.generic import FormView, RedirectView, ListView
 
 from catalogue.models import Content
+from userprofiles.forms import UserForm, UserProfileForm
+
 
 def cargar_info_usuario(request):
     is_auth = False
@@ -36,7 +38,23 @@ class LoginView(FormView):
         login(self.request, form.get_user())
         return super(LoginView, self).form_valid(form)
 
-
+def signUp_view(request):
+    if request.method == 'POST':
+        uform = UserForm(request.POST)
+        pform = UserProfileForm(request.POST)
+        print('post')
+        if uform.is_valid() and pform.is_valid():
+            user = uform.save()
+            profile = pform.save(commit=False)
+            profile.user = user
+            profile.save()
+            print('Se registro')
+            login(request, user)
+            return redirect('/catalogo/')
+    else:
+        uform = UserForm()
+        pform = UserProfileForm()
+    return render(request, 'signup.html', {'uform': uform, 'pform':pform})
 def logout_view(request):
     logout(request)
     return redirect('/user/login')

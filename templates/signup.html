@@ -8,10 +8,13 @@
     </head>
     <body>
    <div>
-        <form action="" method="post">
+        <form action="" method="POST">
             {% csrf_token %}
-            {{ form.as_p }}
-            <input type="submit" value="Login"/> o <a href="{% url 'user:signup' %}">registrate</a>
+            {{ uform.as_p }}
+            {{ pform.as_p }}
+
+            <input type="submit" value="Sign In"/>
+            <p>¿Ya tienes una cuenta? <a href="{% url 'user:login' %}">Inicia Sesión</a></p>o
         </form>
     </div>
     </body>
