@@ -13,10 +13,10 @@ class UserProfileAdmin(admin.ModelAdmin):
 
 @admin.register(History)
 class UserHistoryAdmin(admin.ModelAdmin):
-    list_display = ('user', 'content', 'is_favorite', 'score')
+    list_display = ('user_profile', 'content', 'is_favorite', 'score')
 
 @admin.register(CreditCard)
 class CreditCardAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('user_profile', 'owner', 'number', 'due_month', 'due_year')
 
 admin.site.unregister(Group)

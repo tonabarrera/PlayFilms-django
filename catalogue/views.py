@@ -47,7 +47,7 @@ def film_detail(request, pk):
     film = Content.objects.get(pk=pk)
     data = cargar_info_usuario(request)
     temp_user = request.user.userprofile
-    if History.objects.filter(user=temp_user, content=film, is_favorite=True).exists():
+    if History.objects.filter(user_profile=temp_user, content=film, is_favorite=True).exists():
         data['fav_submit'] = 'Quitar de favoritos'
     else:
         data['fav_submit'] = 'Agregar a favoritos'
@@ -60,7 +60,7 @@ def serie_detail(request, pk):
     serie = Content.objects.get(pk=pk)
     data = cargar_info_usuario(request)
     temp_user = request.user.userprofile
-    if History.objects.filter(user=temp_user, content=serie, is_favorite=True).exists():
+    if History.objects.filter(user_profile=temp_user, content=serie, is_favorite=True).exists():
         data['fav_submit'] = 'Quitar de favoritos'
     else:
         data['fav_submit'] = 'Agregar a favoritos'
@@ -81,13 +81,13 @@ def agregar_favorito_view(request):
             film = Content.objects.get(id=pk)
             temp_user = request.user.userprofile
             if temp_user.favorites.filter(id=pk).exists():
-                history = History.objects.get(user=temp_user, content=film)
+                history = History.objects.get(user_profile=temp_user, content=film)
                 history.is_favorite = not history.is_favorite
                 data = {'favorito': history.is_favorite}
                 history.save()
             else:
                 data = {'favorito': True}
-                history = History.objects.create(user=temp_user, content=film, is_favorite=True)
+                history = History.objects.create(user_profile=temp_user, content=film, is_favorite=True)
                 history.save()
     return JsonResponse(data)
 
@@ -101,11 +101,11 @@ def puntuar_view(request):
             film = Content.objects.get(id=pk)
             temp_user = request.user.userprofile
             if temp_user.favorites.filter(id=pk).exists():
-                history = History.objects.get(user=temp_user, content=film)
+                history = History.objects.get(user_profile=temp_user, content=film)
                 history.score = score
                 history.save()
             else:
-                history = History.objects.create(user=temp_user, content=film, score=score)
+                history = History.objects.create(user_profile=temp_user, content=film, score=score)
                 history.save()
             data['puntaje'] = Content.objects.get(id=pk).score
             data['ok'] = True

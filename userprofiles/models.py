@@ -25,7 +25,7 @@ class UserProfile(models.Model):
 
 
 class History(models.Model):
-    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     content = models.ForeignKey(Content, on_delete=models.CASCADE)
     score = models.PositiveIntegerField(blank=True, default=5)
     is_favorite = models.BooleanField(default=False)
@@ -38,8 +38,26 @@ class History(models.Model):
 
 
 class CreditCard(models.Model):
-    number = models.CharField(max_length=19, validators=[RegexValidator(r'^\d{1,10}$')])
+    MONTH_CHOICES = (
+        ('01', '01'),
+        ('02', '02'),
+        ('03', '03'),
+        ('04', '04'),
+        ('05', '05'),
+        ('06', '06'),
+        ('07', '07'),
+        ('08', '08'),
+        ('09', '09'),
+        ('10', '10'),
+        ('11', '11'),
+        ('12', '12'),
+    )
+    YEAR_CHOICES = []
+    for n in range(17, 45):
+        YEAR_CHOICES.append((str(n), str(n)))
+    number = models.CharField(max_length=19, validators=[RegexValidator(r'^\d{1,19}$')])
     owner = models.CharField(max_length=45)
-    due_date = models.DateField()
-    cvv = models.CharField(max_length=4, validators=[RegexValidator(r'^\d{1,10}$')])
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    due_month = models.CharField(max_length=2, choices=MONTH_CHOICES)
+    due_year = models.CharField(max_length=2, choices=YEAR_CHOICES)
+    CVV = models.CharField(max_length=4, validators=[RegexValidator(r'^\d{1,10}$')])
+    user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)

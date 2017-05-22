@@ -12,7 +12,7 @@
             {% csrf_token %}
             {{ uform.as_p }}
             {{ pform.as_p }}
-
+            {{ cform.as_p }}
             <input type="submit" value="Sign In"/>
             <p>¿Ya tienes una cuenta? <a href="{% url 'user:login' %}">Inicia Sesión</a></p>o
         </form>

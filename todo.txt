@@ -1,8 +1,3 @@
---SABADO
-
-- puntuar
-- calcular promedio de la serie
-
 -DOMINGO
 
 - cambio de datos de usuario
