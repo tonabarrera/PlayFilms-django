@@ -8,5 +8,5 @@ urlpatterns = [
     url(r'^logout/$', views.logout_view, name='logout'),
     url(r'^favorites/$', FavoritesListView.as_view(), name='favorites'),
     url(r'^signup/$', views.signUp_view, name='signup'),
-
+    url(r'^reset/$', views.reset_password_view, name='reset'),
 ]

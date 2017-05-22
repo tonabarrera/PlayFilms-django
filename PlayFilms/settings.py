@@ -117,3 +117,10 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# EMAIL SETTINGS
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = "587"
+EMAIL_HOST_USER = "playfilms.email@gmail.com"
+EMAIL_HOST_PASSWORD = "hola90777"
+EMAIL_USE_TLS = True

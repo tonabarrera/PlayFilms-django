@@ -3,7 +3,9 @@ from django.contrib.auth.forms import AuthenticationForm
 
 # Create your views here.
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponseRedirect
+from django.contrib.auth.models import User
+from django.core.mail import send_mail, BadHeaderError, EmailMultiAlternatives
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect
 from django.views.generic import FormView, RedirectView, ListView
 
@@ -85,3 +87,32 @@ class FavoritesListView(LoginRequiredMixin, ListView):
         context['data'] = data
         return context
 
+def reset_password_view(request):
+    data = {}
+    if request.method == 'POST':
+        username = request.POST.get('user', '')
+        if username:
+            try:
+                user = User.objects.get(username=username)
+            except User.DoesNotExist:
+                user = None
+                data = {'error': 'Ingresa un username valido'}
+            if user:
+                contra = User.objects.make_random_password(length=16)
+                user.set_password(contra)
+                print(contra)
+                data = {'mensaje': 'Revisa tu correo electronico e intenta iniciar sesion'}
+                subject = 'Recuperar contraseña'
+                message_text = 'PlayFilms,'
+                message_html = '<p>Hola <strong>%s</strong>, tu nueva contraseña es: <strong>%s</strong></p>' % (username, contra)
+                from_email = '"PlayFilms" <playfilms.email@gmail.com>'
+                destination = user.email
+                try:
+                    msg = EmailMultiAlternatives(subject, message_text, from_email, [destination])
+                    msg.attach_alternative(message_html, "text/html")
+                    msg.send()
+                except BadHeaderError:
+                    return HttpResponse('Invalid header found.')
+        else:
+            data = {'error': 'Ingresa un username valido'}
+    return render(request, 'recuperar_contra.html', {'data': data})
