@@ -18,6 +18,7 @@ EXTRA_CHOICES = [
     ('12', '12'),
 ]
 
+
 class UserForm(forms.ModelForm):
     class Meta:
         model = User
@@ -29,13 +30,14 @@ class UserForm(forms.ModelForm):
             'username': ''
         }
 
+
 class UserProfileForm(forms.ModelForm):
-    class Meta():
+    class Meta:
         model = UserProfile
         fields = ['avatar']
 
-class CreditCardForm(forms.ModelForm):
 
-    class Meta():
+class CreditCardForm(forms.ModelForm):
+    class Meta:
         model = CreditCard
         fields = ['number', 'owner', 'due_month', 'due_year', 'CVV']

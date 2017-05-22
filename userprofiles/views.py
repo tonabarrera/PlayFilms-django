@@ -1,10 +1,9 @@
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
-
 # Create your views here.
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
-from django.core.mail import send_mail, BadHeaderError, EmailMultiAlternatives
+from django.core.mail import BadHeaderError, EmailMultiAlternatives
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect
 from django.views.generic import FormView, RedirectView, ListView
@@ -25,6 +24,7 @@ def cargar_info_usuario(request):
     }
     return data
 
+
 class LoginView(FormView):
     template_name = 'login.html'
     form_class = AuthenticationForm
@@ -39,6 +39,7 @@ class LoginView(FormView):
     def form_valid(self, form):
         login(self.request, form.get_user())
         return super(LoginView, self).form_valid(form)
+
 
 def signUp_view(request):
     if request.method == 'POST':
@@ -61,7 +62,9 @@ def signUp_view(request):
         uform = UserForm()
         pform = UserProfileForm()
         cform = CreditCardForm()
-    return render(request, 'signup.html', {'uform': uform, 'pform':pform, 'cform':cform})
+    return render(request, 'signup.html', {'uform': uform, 'pform': pform, 'cform': cform})
+
+
 def logout_view(request):
     logout(request)
     return redirect('/user/login')
@@ -70,6 +73,7 @@ def logout_view(request):
 class LoginRedirectView(RedirectView):
     permanent = True
     pattern_name = 'user:login'
+
 
 class FavoritesListView(LoginRequiredMixin, ListView):
     model = Content
@@ -86,6 +90,7 @@ class FavoritesListView(LoginRequiredMixin, ListView):
         data = cargar_info_usuario(self.request)
         context['data'] = data
         return context
+
 
 def reset_password_view(request):
     data = {}
@@ -105,15 +110,20 @@ def reset_password_view(request):
                 data = {'mensaje': 'Revisa tu correo electronico e intenta iniciar sesion'}
                 subject = 'Recuperar contraseña'
                 message_text = 'PlayFilms,'
-                message_html = '<p>Hola <strong>%s</strong>, tu nueva contraseña es: <strong>%s</strong></p>' % (username, contra)
-                from_email = '"PlayFilms" <playfilms.email@gmail.com>'
+                message_html = '<p>Hola <strong>%s</strong>, tu nueva contraseña es: <strong>%s</strong></p>' % (
+                username, contra)
+                FROM_EMAIL = '"PlayFilms" <playfilms.email@gmail.com>'
                 destination = user.email
-                try:
-                    msg = EmailMultiAlternatives(subject, message_text, from_email, [destination])
-                    msg.attach_alternative(message_html, "text/html")
-                    msg.send()
-                except BadHeaderError:
-                    return HttpResponse('Invalid header found.')
+                send_email(subject, message_text, message_html, FROM_EMAIL, destination)
         else:
             data = {'error': 'Ingresa un username valido'}
     return render(request, 'recuperar_contra.html', {'data': data})
+
+
+def send_email(subject, message, html, from_email, destination):
+    try:
+        msg = EmailMultiAlternatives(subject, message, from_email, [destination])
+        msg.attach_alternative(html, "text/html")
+        msg.send()
+    except BadHeaderError:
+        return HttpResponse('Invalid header found.')
