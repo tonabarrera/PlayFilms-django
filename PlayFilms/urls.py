@@ -27,5 +27,5 @@ urlpatterns = [
     url(r'^catalogo/', include('catalogue.urls', namespace='catalogue')),
     url(r'^$', LoginRedirectView.as_view(), name='home'),
 ]
-urlpatterns += staticfiles_urlpatterns()
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

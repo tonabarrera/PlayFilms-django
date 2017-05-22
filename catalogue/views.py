@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import render
 
+from PlayFilms import settings
 from catalogue.models import Content, Episode
 
 # Create your views here.
@@ -37,6 +38,7 @@ def buscar(request):
 
 @login_required(login_url='/user/login/')
 def content_list(request):
+    print(settings.STATIC_ROOT)
     data = cargar_info_usuario(request)
     content = buscar(request)
     return render(request, 'catalogo.html', {'catalogue': content, 'data': data})
