@@ -100,6 +100,7 @@ def reset_password_view(request):
             if user:
                 contra = User.objects.make_random_password(length=16)
                 user.set_password(contra)
+                user.save()
                 print(contra)
                 data = {'mensaje': 'Revisa tu correo electronico e intenta iniciar sesion'}
                 subject = 'Recuperar contraseña'
