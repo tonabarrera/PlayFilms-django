@@ -3,11 +3,11 @@ from django.http import JsonResponse
 from django.shortcuts import render
 
 from PlayFilms import settings
+from PlayFilms.mixins import premium_required
 from catalogue.models import Content, Episode
 
 # Create your views here.
 from userprofiles.models import History
-
 
 def cargar_info_usuario(request):
     is_auth = False
@@ -36,9 +36,9 @@ def buscar(request):
     return content
 
 
+@premium_required
 @login_required(login_url='/user/login/')
 def content_list(request):
-    print(settings.STATIC_ROOT)
     data = cargar_info_usuario(request)
     content = buscar(request)
     return render(request, 'catalogo.html', {'catalogue': content, 'data': data})
@@ -112,3 +112,4 @@ def puntuar_view(request):
             data['puntaje'] = Content.objects.get(id=pk).score
             data['ok'] = True
     return JsonResponse(data)
+

@@ -9,4 +9,5 @@ urlpatterns = [
     url(r'^favorites/$', FavoritesListView.as_view(), name='favorites'),
     url(r'^signup/$', views.signUp_view, name='signup'),
     url(r'^reset/$', views.reset_password_view, name='reset'),
+    url(r'^profile/$', views.profile_view, name='profile'),
 ]

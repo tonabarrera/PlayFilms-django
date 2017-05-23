@@ -127,3 +127,8 @@ def send_email(subject, message, html, from_email, destination):
         msg.send()
     except BadHeaderError:
         return HttpResponse('Invalid header found.')
+
+
+def profile_view(request):
+    data = cargar_info_usuario(request)
+    return render(request, 'profile.html', {'data': data})
