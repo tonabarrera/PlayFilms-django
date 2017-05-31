@@ -6,18 +6,17 @@
       <meta charset="UTF-8">
       <title>PlayFilms</title>
         <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/bootstrap-theme.min.css' %}">
     <script src="{% static 'js/jquery.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     </head>
     <body>
    <div>
-        <form action="" method="POST">
+        <form action="" method="POST" class="form-group">
             {% csrf_token %}
             {{ uform.as_p }}
             {{ pform.as_p }}
             {{ cform.as_p }}
-            <input type="submit" value="Sign In"/>
+            <input type="submit" class="btb btn-primary" value="Sign In"/>
             <p>¿Ya tienes una cuenta? <a href="{% url 'user:login' %}">Inicia Sesión</a></p>
         </form>
     </div>
