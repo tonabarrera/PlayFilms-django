@@ -1,68 +1,70 @@
 {% extends 'base.html' %}
 {% block content %}
-    <p>{{ serie.title }}</p>
-    <p id="puntaje">{{ serie.score }}</p>
-    <p>{{ serie.category }}</p>
-    <p>{{ serie.get_type_of_content_display }}</p>
-    <p>Actores: </p>
-    <ul>
-        {% for actor in serie.actors.all %}
-            <li>{{ actor.name }} {{ actor.role }}</li>
-        {% endfor %}
-    </ul>
-    <p>Episodios</p>
-    <ol>
-    {% for episode in serie.episode_set.all %}
-        <li><a href="{% url 'catalogue:episode' pk=episode.pk %}">{{ episode.title }}</a></li>
+  <p>{{ serie.title }}</p>
+  <p id="puntaje">{{ serie.score }}</p>
+  <p>{{ serie.category }}</p>
+  <p>{{ serie.get_type_of_content_display }}</p>
+  <p>Actores: </p>
+  <ul>
+    {% for actor in serie.actors.all %}
+      <li>{{ actor.name }} {{ actor.role }}</li>
     {% endfor %}
-    </ol>
-    <form action="{% url 'catalogue:agregar' %}" method="GET" id="favorito">
-        <input type="text" value="{{ serie.id }}" id="fav" hidden>
-        <input type="submit" id="submit-favorito" value="{{ data.fav_submit }}">
-    </form>
-    <form action="{% url 'catalogue:puntuar' %}" method="GET" id="puntuar">
-        <input type="number" min="0" max="10" id="calificacion" required>
-        <input type="text" value="{{ serie.id }}" id="calificacion-id" hidden>
-        <input type="submit" value="Calificar">
-    </form>
-    <script>
-       $("#favorito").on('submit', function (e) {
-            e.preventDefault();
-            $.ajax({
-                url:"/catalogo/agregar/",
-                type: "GET",
-                data: {"film": $('#fav').val()},
-                success: function (json) {
-                    console.log("Es favorito: " + json.favorito);
-                    if (json.favorito)
-                        $("#submit-favorito").val("Quitar de favoritos");
-                    else
-                        $("#submit-favorito").val("Agregar a favoritos");
-                },
-                error: function (xhr, errmsg, err) {
-                    consolo.log("ERROR: " + err);
-                    consolo.log("ERROR MESSAGE: " + errmsg);
-                    console.log(xhr.status + ': ' + xhr.responseText)
-                }
-            });
-        });
-       $("#puntuar").on('submit', function (e) {
-            e.preventDefault();
-            $.ajax({
-                url:"/catalogo/puntuar/",
-                type: "GET",
-                data: {"film": $('#calificacion-id').val(),
-                    "calificacion": $('#calificacion').val()},
-                success: function (json) {
-                    console.log("It works?: " + json.ok);
-                    $('#puntaje').text(json.puntaje);
-                },
-                error: function (xhr, errmsg, err) {
-                    consolo.log("ERROR: " + err);
-                    consolo.log("ERROR MESSAGE: " + errmsg);
-                    console.log(xhr.status + ': ' + xhr.responseText)
-                }
-            });
-        });
-    </script>
+  </ul>
+  <p>Episodios</p>
+  <ol>
+    {% for episode in serie.episode_set.all %}
+      <li><a href="{% url 'catalogue:episode' pk=episode.pk %}">{{ episode.title }}</a></li>
+    {% endfor %}
+  </ol>
+  <form action="{% url 'catalogue:agregar' %}" method="GET" id="favorito">
+    <input type="text" value="{{ serie.id }}" id="fav" hidden>
+    <input type="submit" id="submit-favorito" value="{{ data.fav_submit }}">
+  </form>
+  <form action="{% url 'catalogue:puntuar' %}" method="GET" id="puntuar">
+    <input type="number" min="0" max="10" id="calificacion" required>
+    <input type="text" value="{{ serie.id }}" id="calificacion-id" hidden>
+    <input type="submit" value="Calificar">
+  </form>
+  <script>
+      $("#favorito").on('submit', function (e) {
+          e.preventDefault();
+          $.ajax({
+              url: "/catalogo/agregar/",
+              type: "GET",
+              data: {"film": $('#fav').val()},
+              success: function (json) {
+                  console.log("Es favorito: " + json.favorito);
+                  if (json.favorito)
+                      $("#submit-favorito").val("Quitar de favoritos");
+                  else
+                      $("#submit-favorito").val("Agregar a favoritos");
+              },
+              error: function (xhr, errmsg, err) {
+                  consolo.log("ERROR: " + err);
+                  consolo.log("ERROR MESSAGE: " + errmsg);
+                  console.log(xhr.status + ': ' + xhr.responseText)
+              }
+          });
+      });
+      $("#puntuar").on('submit', function (e) {
+          e.preventDefault();
+          $.ajax({
+              url: "/catalogo/puntuar/",
+              type: "GET",
+              data: {
+                  "film": $('#calificacion-id').val(),
+                  "calificacion": $('#calificacion').val()
+              },
+              success: function (json) {
+                  console.log("It works?: " + json.ok);
+                  $('#puntaje').text(json.puntaje);
+              },
+              error: function (xhr, errmsg, err) {
+                  consolo.log("ERROR: " + err);
+                  consolo.log("ERROR MESSAGE: " + errmsg);
+                  console.log(xhr.status + ': ' + xhr.responseText)
+              }
+          });
+      });
+  </script>
 {% endblock %}
