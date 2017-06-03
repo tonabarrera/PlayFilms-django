@@ -11,25 +11,37 @@
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
 </head>
 <body>
-   <div class="container">
-       <div class="row main">
-           <div class="panel-heading">
-               <div class="panel-title text-center">
-                    <h1 class="title">Inicio de Sesión</h1>
-                    <hr />
+    <div class="container">
+        <div class="row main">
+            <div class="panel-heading">
+                <div class="panel-title text-center">
+                    <h1 class="title">PlayFilms</h1><hr />
                 </div>
             </div>
-           <div class="main-login main-center">
-                <form action="" method="post" class="form-horizontal">
+        <div class="main-login main-center">
+            <div class="panel-heading">
+                <div class="panel-title text-center">
+                    <h2 class="title">Login</h2>
+                </div>
+            </div>
+            <form action="" method="post" class="form-horizontal">
                 {% csrf_token %}
-                {{ form.as_p }}
+                {% for field in form %}
+                <div class="form-group">
+                    <label for="{{ field.id_for_label }}" class="cols-sm-2 control-label">{{ field.label}}</label>
+                    <div class="cols-md-10">
+                        <input class="form-control" id="{{ field.id_for_label }}" name="{{ field.html_name }}"
+                               type="{{field.field.widget.input_type}}" required maxlength="{{ field.field.max_length }}"/>
+                    </div>
+                </div>
+                {% endfor %}
                 <div class="inline-group">
                     <input type="submit" value="Login" class="btn btn-primary login-button"/> o <a href="{% url 'user:signup' %}">registrate</a>
                 </div>
-                </form>
-                <p class="text-center"><a href="{% url 'user:reset' %}">Recuperar contraseña</a></p>
-           </div>
-       </div>
+            </form>
+            <p class="text-center"><a href="{% url 'user:reset' %}">Recuperar contraseña</a></p>
+        </div>
+        </div>
     </div>
 </body>
 </html>

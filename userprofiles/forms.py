@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
+from django.forms import TextInput
 
 from userprofiles.models import UserProfile, CreditCard
 
@@ -29,6 +30,13 @@ class UserForm(forms.ModelForm):
         help_texts = {
             'username': ''
         }
+        labels = {
+            'first_name': 'Nombre',
+            'last_name': 'Apellidos',
+            'email': 'Email',
+            'password': 'Contraseña',
+        }
+
 
 
 class UserProfileForm(forms.ModelForm):

@@ -9,6 +9,10 @@ h1.title {
     font-weight: 400;
 }
 
+h2.title {
+    margin-top:0;
+}
+
 hr{
     width: 10%;
     color: #fff;
