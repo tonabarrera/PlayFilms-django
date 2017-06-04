@@ -1,31 +1,31 @@
 {% load staticfiles %}
 <!DOCTYPE html>
 <html>
-    <head>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta charset="UTF-8">
-      <title>PlayFilms</title>
-        <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/bootstrap-theme.min.css' %}">
-    <script src="{% static 'js/jquery.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
-    </head>
-    <body>
-   <div>
-       {% if data.mensaje %}
-           <p>{{ data.mensaje }}</p>
-       {% elif data.error %}
-           <p>{{ data.error }}</p>
-       {% endif %}
-       <p>Ingresa tu nombre de usuario para que se pueda mandar un correo para recuperar tu contraseña</p>
-        <form action="" method="POST">
-            {% csrf_token %}
-            <label>Nombre de usuario:
-                <input type="text" name="user" required>
-            </label>
-            <input type="submit" value="Enviar"/>
-        </form>
-   <p>¿Ya tienes una cuenta? <a href="{% url 'user:login' %}">Inicia Sesión</a></p>
-    </div>
-    </body>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <title>PlayFilms</title>
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/bootstrap-theme.min.css' %}">
+  <script src="{% static 'js/jquery.min.js' %}"></script>
+  <script src="{% static 'js/bootstrap.min.js' %}"></script>
+</head>
+<body>
+<div>
+  {% if data.mensaje %}
+    <p>{{ data.mensaje }}</p>
+  {% elif data.error %}
+    <p>{{ data.error }}</p>
+  {% endif %}
+  <p>Ingresa tu nombre de usuario para que se pueda mandar un correo para recuperar tu contraseña</p>
+  <form action="" method="POST">
+    {% csrf_token %}
+    <label>Nombre de usuario:
+      <input type="text" name="user" required>
+    </label>
+    <input type="submit" value="Enviar"/>
+  </form>
+  <p>¿Ya tienes una cuenta? <a href="{% url 'user:login' %}">Inicia Sesión</a></p>
+</div>
+</body>
 </html>

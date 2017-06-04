@@ -55,9 +55,9 @@ class CreditCard(models.Model):
     YEAR_CHOICES = []
     for n in range(17, 45):
         YEAR_CHOICES.append((str(n), str(n)))
-    number = models.CharField(max_length=19, validators=[RegexValidator(r'^\d{1,19}$')])
-    owner = models.CharField(max_length=45)
-    due_month = models.CharField(max_length=2, choices=MONTH_CHOICES)
-    due_year = models.CharField(max_length=2, choices=YEAR_CHOICES)
+    number = models.CharField(max_length=19, validators=[RegexValidator(r'^\d{1,19}$')], unique=True, verbose_name='Numero de tarjeta')
+    owner = models.CharField(max_length=45, verbose_name='Dueño')
+    due_month = models.CharField(max_length=2, choices=MONTH_CHOICES, verbose_name='Mes')
+    due_year = models.CharField(max_length=2, choices=YEAR_CHOICES, verbose_name='Año')
     CVV = models.CharField(max_length=4, validators=[RegexValidator(r'^\d{1,10}$')])
     user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
