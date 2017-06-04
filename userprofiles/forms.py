@@ -37,6 +37,11 @@ class UserForm(forms.ModelForm):
             'password': 'Contraseña',
         }
 
+    def __init__(self, *args, **kwargs):
+        super(UserForm, self).__init__(*args, **kwargs)
+        for visible in self.fields:
+            self.fields[visible].widget.attrs['class'] = 'form-control'
+
 
 
 class UserProfileForm(forms.ModelForm):

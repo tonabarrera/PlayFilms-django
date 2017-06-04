@@ -19,7 +19,7 @@
         <input id="buscar" type="search" name="q"><input type="submit" value="Buscar">
       </form>
       <a href="{% url 'user:favorites' %}">favoritos</a>
-      <a href="">{{ data.username }}</a>, <a href="{% url 'user:logout' %}">Logout</a>
+      <a href="{% url 'user:profile' %}">{{ data.username }}</a>, <a href="{% url 'user:logout' %}">Logout</a>
     {% endif %}
   </div>
 </header>
