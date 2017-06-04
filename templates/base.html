@@ -12,16 +12,35 @@
 </head>
 <body>
 <header>
-    <div><a href="{%  url 'catalogue:content' %}">PlayFilms</a></div>
-    <div>
-        {% if data.is_auth %}
-            <form action="{%  url 'catalogue:content' %}" method="get">
-                <input id="buscar" type="search" name="q"><input type="submit" value="Buscar">
-            </form>
-            <a href="{% url 'user:favorites' %}">favoritos</a>
-            <a href="">{{ data.username }}</a>, <a href="{% url 'user:logout' %}">Logout</a>
-        {% endif %}
-    </div>
+    <nav class="navbar navbar-inverse" role="navigation">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse"
+                data-target=".navbar-ex1-collapse">
+          <span class="sr-only">Desplegar navegación</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">PlayFilms</a>
+      </div>
+      <div class="collapse navbar-collapse navbar-ex1-collapse">
+        <ul class="nav navbar-nav">
+            {% if data.is_auth %}
+            <li class="active"><a href="">{{ data.username }}</a></li>
+            <li><a href="{%  url 'catalogue:content' %}">Catálogo</a></li>
+            <li><a href="{%  url 'user:favorites' %}">Favoritos</a></li>
+              <form class="navbar-form navbar-left" role="search" action="{%  url 'catalogue:content' %}" method="get">
+                  <div class="form-group">
+                  <input id="buscar" type="search" name="q"><input type="submit" value="Buscar">
+                  </div>
+              </form>
+        </ul>
+          <ul class="nav navbar-nav navbar-right">
+                <li><a href="{% url 'user:logout' %}">Salir</a></li>
+          </ul>
+            {% endif %}
+      </div>
+    </nav>
 </header>
     {% block content %}
     {% endblock %}
