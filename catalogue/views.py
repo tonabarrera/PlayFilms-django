@@ -9,6 +9,7 @@ from catalogue.models import Content, Episode
 # Create your views here.
 from userprofiles.models import History
 
+
 def cargar_info_usuario(request):
     is_auth = False
     username = None
@@ -44,6 +45,23 @@ def content_list(request):
     return render(request, 'catalogo.html', {'catalogue': content, 'data': data})
 
 
+@premium_required
+@login_required(login_url='/user/login/')
+def movies_view(request):
+    data = cargar_info_usuario(request)
+    content = Content.objects.filter(type_of_content=1)
+    return render(request, 'catalogo.html', {'catalogue': content, 'data': data})
+
+
+@premium_required
+@login_required(login_url='/user/login/')
+def series_view(request):
+    data = cargar_info_usuario(request)
+    content = Content.objects.filter(type_of_content=2)
+    return render(request, 'catalogo.html', {'catalogue': content, 'data': data})
+
+
+@premium_required
 @login_required(login_url='/user/login/')
 def film_detail(request, pk):
     film = Content.objects.get(pk=pk)
@@ -57,6 +75,7 @@ def film_detail(request, pk):
     return render(request, 'pelicula.html', {'film': film, 'data': data})
 
 
+@premium_required
 @login_required(login_url='/user/login/')
 def serie_detail(request, pk):
     serie = Content.objects.get(pk=pk)
@@ -69,11 +88,13 @@ def serie_detail(request, pk):
     return render(request, 'serie.html', {'serie': serie, 'data': data})
 
 
+@premium_required
 @login_required(login_url='/user/login/')
 def episode_detail(request, pk):
     episode = Episode.objects.get(pk=pk)
     data = cargar_info_usuario(request)
     return render(request, 'episode.html', {'episode': episode, 'data': data})
+
 
 def agregar_favorito_view(request):
     data = {'error': 'error'}
@@ -112,4 +133,3 @@ def puntuar_view(request):
             data['puntaje'] = Content.objects.get(id=pk).score
             data['ok'] = True
     return JsonResponse(data)
-

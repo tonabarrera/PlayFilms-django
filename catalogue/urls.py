@@ -10,4 +10,7 @@ urlpatterns = [
     url(r'^episode/(?P<pk>[0-9]+)/$', views.episode_detail, name='episode'),
     url(r'^agregar/$', views.agregar_favorito_view, name='agregar'),
     url(r'^puntuar/$', views.puntuar_view, name='puntuar'),
+    url(r'^peliculas/$', views.movies_view, name='movies'),
+    url(r'^series/$', views.series_view, name='series'),
+
 ]

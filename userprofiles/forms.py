@@ -49,8 +49,18 @@ class UserProfileForm(forms.ModelForm):
         model = UserProfile
         fields = ['avatar']
 
+    def __init__(self, *args, **kwargs):
+        super(UserProfileForm, self).__init__(*args, **kwargs)
+        for visible in self.fields:
+            self.fields[visible].widget.attrs['class'] = 'form-control-file'
+
 
 class CreditCardForm(forms.ModelForm):
     class Meta:
         model = CreditCard
         fields = ['number', 'owner', 'due_month', 'due_year', 'CVV']
+
+    def __init__(self, *args, **kwargs):
+        super(CreditCardForm, self).__init__(*args, **kwargs)
+        for visible in self.fields:
+            self.fields[visible].widget.attrs['class'] = 'form-control'
