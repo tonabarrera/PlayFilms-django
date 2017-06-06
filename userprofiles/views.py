@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
@@ -32,17 +34,28 @@ class LoginView(FormView):
     success_url = '/catalogo/'
 
     def dispatch(self, request, *args, **kwargs):
+        print('dispatch')
         if request.user.is_authenticated():
             return HttpResponseRedirect('/catalogo/')
         else:
             return super(LoginView, self).dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
+        print('login')
         login(self.request, form.get_user())
         return super(LoginView, self).form_valid(form)
 
+
 def validar_tarjeta(card, profile):
-    print('Madre mia willy')
+    card_year = int(card.due_year) + 2000
+    card_month = int(card.due_month)
+    card_date = datetime(card_year, card_month, 1)
+    current_date = datetime.now()
+    current_date = current_date.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+    if card_date>=current_date:
+        profile.type_of_user = 1
+        profile.save()
+
 
 def signUp_view(request):
     if request.method == 'POST':
@@ -52,7 +65,6 @@ def signUp_view(request):
         if uform.is_valid() and pform.is_valid() and cform.is_valid():
             user = uform.save()
             profile = pform.save(commit=False)
-
             card = cform.save(commit=False)
             profile.user = user
             profile.avatar = pform.cleaned_data['avatar']
@@ -78,6 +90,7 @@ def logout_view(request):
 class LoginRedirectView(RedirectView):
     permanent = True
     pattern_name = 'user:login'
+
 
 class FavoritesListView(LoginRequiredMixin, ListView):
     model = Content
@@ -115,7 +128,7 @@ def reset_password_view(request):
                 subject = 'Recuperar contraseña'
                 message_text = 'PlayFilms,'
                 message_html = '<p>Hola <strong>%s</strong>, tu nueva contraseña es: <strong>%s</strong></p>' % (
-                username, contra)
+                    username, contra)
                 FROM_EMAIL = '"PlayFilms" <playfilms.email@gmail.com>'
                 destination = user.email
                 send_email(subject, message_text, message_html, FROM_EMAIL, destination)
@@ -131,6 +144,7 @@ def send_email(subject, message, html, from_email, destination):
         msg.send()
     except BadHeaderError:
         return HttpResponse('Invalid header found.')
+
 
 @login_required(login_url='/user/login/')
 def profile_view(request):
