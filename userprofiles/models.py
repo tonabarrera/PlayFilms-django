@@ -60,4 +60,4 @@ class CreditCard(models.Model):
     due_month = models.CharField(max_length=2, choices=MONTH_CHOICES, verbose_name='Mes')
     due_year = models.CharField(max_length=2, choices=YEAR_CHOICES, verbose_name='Año')
     CVV = models.CharField(max_length=4, validators=[RegexValidator(r'^\d{1,10}$')])
-    user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    user_profile = models.OneToOneField(UserProfile)
