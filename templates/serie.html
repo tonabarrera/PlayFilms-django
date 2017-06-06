@@ -1,5 +1,10 @@
 {% extends 'base.html' %}
 {% block content %}
+  <div class="mejor-calificados">
+    {% for elemento in content %}
+      <img src="{{ elemento.cover.url }}" alt="{{ elemento.title }}" width="100px">
+    {% endfor %}
+  </div>
   <p>{{ serie.title }}</p>
   <p id="puntaje">{{ serie.score }}</p>
   <p>{{ serie.category }}</p>

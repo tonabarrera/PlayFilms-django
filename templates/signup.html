@@ -20,7 +20,7 @@
       </div>
     </div>
     <div class="main-login main-center">
-      <form action="" method="POST" class="form-horizontal">
+      <form action="" method="POST" class="form-horizontal" enctype="multipart/form-data">
       {% csrf_token %}
         {% for field in uform %}
           <div class="form-group">

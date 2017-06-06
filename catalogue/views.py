@@ -10,6 +10,8 @@ from catalogue.models import Content, Episode
 # Create your views here.
 from userprofiles.models import History
 
+def mejor_calificados():
+    return Content.objects.all().order_by('-score')[0:5]
 
 def cargar_info_usuario(request):
     is_auth = False
@@ -27,17 +29,17 @@ def cargar_info_usuario(request):
 def buscar(request):
     content = None
     name = None
-    es_busqueda=False
+    es_busqueda = False
     if request.method == 'GET':
         name = request.GET.get('q', None)
         if name is not None:
             print(name)
             es_busqueda = True
-            content = Content.objects.filter(Q(title__contains=name) | Q(category__name__contains=name) | Q(actors__name__contains=name))
+            content = Content.objects.filter(
+                Q(title__contains=name) | Q(category__name__startswith=name) | Q(category__name__endswith=name))
     if name is None:
         content = Content.objects.all()
-    return {'contenido':content, 'es_busqueda':es_busqueda, 'parametro': name}
-
+    return {'contenido': content, 'es_busqueda': es_busqueda, 'parametro': name}
 
 
 @login_required(login_url='/user/login/')
@@ -47,7 +49,7 @@ def content_list(request):
     content = buscar(request)
     return render(request, 'catalogo.html', {'catalogue': content['contenido'],
                                              'data': data,
-                                             'es_busqueda':content['es_busqueda'],
+                                             'es_busqueda': content['es_busqueda'],
                                              'parametro': content['parametro']})
 
 
@@ -73,12 +75,13 @@ def film_detail(request, pk):
     film = Content.objects.get(pk=pk)
     data = cargar_info_usuario(request)
     temp_user = request.user.userprofile
+    content = mejor_calificados()
     if History.objects.filter(user_profile=temp_user, content=film, is_favorite=True).exists():
         data['fav_submit'] = 'Quitar de favoritos'
     else:
         data['fav_submit'] = 'Agregar a favoritos'
 
-    return render(request, 'pelicula.html', {'film': film, 'data': data})
+    return render(request, 'pelicula.html', {'film': film, 'data': data, 'content':content})
 
 
 @login_required(login_url='/user/login/')
@@ -86,12 +89,13 @@ def film_detail(request, pk):
 def serie_detail(request, pk):
     serie = Content.objects.get(pk=pk)
     data = cargar_info_usuario(request)
+    content = mejor_calificados()
     temp_user = request.user.userprofile
     if History.objects.filter(user_profile=temp_user, content=serie, is_favorite=True).exists():
         data['fav_submit'] = 'Quitar de favoritos'
     else:
         data['fav_submit'] = 'Agregar a favoritos'
-    return render(request, 'serie.html', {'serie': serie, 'data': data})
+    return render(request, 'serie.html', {'serie': serie, 'data': data, 'content':content})
 
 
 @login_required(login_url='/user/login/')
@@ -99,7 +103,8 @@ def serie_detail(request, pk):
 def episode_detail(request, pk):
     episode = Episode.objects.get(pk=pk)
     data = cargar_info_usuario(request)
-    return render(request, 'episode.html', {'episode': episode, 'data': data})
+    content = mejor_calificados()
+    return render(request, 'episode.html', {'episode': episode, 'data': data, 'content':content})
 
 
 def agregar_favorito_view(request):

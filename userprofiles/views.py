@@ -41,21 +41,25 @@ class LoginView(FormView):
         login(self.request, form.get_user())
         return super(LoginView, self).form_valid(form)
 
+def validar_tarjeta(card, profile):
+    print('Madre mia willy')
 
 def signUp_view(request):
     if request.method == 'POST':
         uform = UserForm(request.POST)
-        pform = UserProfileForm(request.POST)
+        pform = UserProfileForm(request.POST, request.FILES)
         cform = CreditCardForm(request.POST)
-        print('post')
         if uform.is_valid() and pform.is_valid() and cform.is_valid():
             user = uform.save()
             profile = pform.save(commit=False)
+
             card = cform.save(commit=False)
             profile.user = user
+            profile.avatar = pform.cleaned_data['avatar']
             profile.save()
             card.user_profile = profile
             card.save()
+            validar_tarjeta(card, profile)
             print('Se registro')
             login(request, user)
             return redirect('/catalogo/')
