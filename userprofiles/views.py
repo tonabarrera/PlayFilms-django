@@ -1,4 +1,5 @@
 from django.contrib.auth import login, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 # Create your views here.
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -74,7 +75,6 @@ class LoginRedirectView(RedirectView):
     permanent = True
     pattern_name = 'user:login'
 
-
 class FavoritesListView(LoginRequiredMixin, ListView):
     model = Content
     template_name = 'catalogo.html'
@@ -128,7 +128,7 @@ def send_email(subject, message, html, from_email, destination):
     except BadHeaderError:
         return HttpResponse('Invalid header found.')
 
-
+@login_required(login_url='/user/login/')
 def profile_view(request):
     data = cargar_info_usuario(request)
     uform = UserForm()

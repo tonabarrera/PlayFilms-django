@@ -15,6 +15,7 @@
               <h3 class="title">Datos personales</h3>
             </div>
           </div>
+          <img src="{{ user.userprofile.avatar.url }}"  width="100px" height="100px" class="img-circle center-block">
           <form action="" method="POST">
             {% csrf_token %}
             {% for field in uform %}

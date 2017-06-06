@@ -15,7 +15,7 @@ class UserProfile(models.Model):
     )
     user = models.OneToOneField(User)
     type_of_user = models.IntegerField(choices=type_of_user_choices, default=2)
-    avatar = models.ImageField(upload_to='avatars', blank=True, default='/media/avatars/default_app_avatar.png')
+    avatar = models.ImageField(upload_to='avatars', blank=True, default='/avatars/default_app_avatar.png')
     favorites = models.ManyToManyField(Content, through='History')
 
     def email(self):

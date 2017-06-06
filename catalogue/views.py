@@ -39,8 +39,9 @@ def buscar(request):
     return {'contenido':content, 'es_busqueda':es_busqueda, 'parametro': name}
 
 
-@premium_required
+
 @login_required(login_url='/user/login/')
+@premium_required
 def content_list(request):
     data = cargar_info_usuario(request)
     content = buscar(request)
@@ -50,24 +51,24 @@ def content_list(request):
                                              'parametro': content['parametro']})
 
 
-@premium_required
 @login_required(login_url='/user/login/')
+@premium_required
 def movies_view(request):
     data = cargar_info_usuario(request)
     content = Content.objects.filter(type_of_content=1)
     return render(request, 'catalogo.html', {'catalogue': content, 'data': data})
 
 
-@premium_required
 @login_required(login_url='/user/login/')
+@premium_required
 def series_view(request):
     data = cargar_info_usuario(request)
     content = Content.objects.filter(type_of_content=2)
     return render(request, 'catalogo.html', {'catalogue': content, 'data': data})
 
 
-@premium_required
 @login_required(login_url='/user/login/')
+@premium_required
 def film_detail(request, pk):
     film = Content.objects.get(pk=pk)
     data = cargar_info_usuario(request)
@@ -80,8 +81,8 @@ def film_detail(request, pk):
     return render(request, 'pelicula.html', {'film': film, 'data': data})
 
 
-@premium_required
 @login_required(login_url='/user/login/')
+@premium_required
 def serie_detail(request, pk):
     serie = Content.objects.get(pk=pk)
     data = cargar_info_usuario(request)
@@ -93,8 +94,8 @@ def serie_detail(request, pk):
     return render(request, 'serie.html', {'serie': serie, 'data': data})
 
 
-@premium_required
 @login_required(login_url='/user/login/')
+@premium_required
 def episode_detail(request, pk):
     episode = Episode.objects.get(pk=pk)
     data = cargar_info_usuario(request)
