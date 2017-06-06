@@ -1,7 +1,11 @@
 {% extends 'base.html' %}
 {% block content %}
   {% if catalogue.count == 0 %}
-    <p>No se encontraron resultados</p>
+    <p>No se encontraron resultados =(</p>
+  {% else %}
+    {% if es_busqueda %}
+      <h2>Los resultados de la busqueda "{{ parametro }}" fueron:</h2>
+    {% endif %}
   {% endif %}
   {% for element in catalogue %}
     <div style="border:1px solid black;">

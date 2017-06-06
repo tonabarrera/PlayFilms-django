@@ -29,14 +29,17 @@
           <li><a href="{% url 'catalogue:movies' %}">Peliculas</a></li>
           <li><a href="{% url 'catalogue:series' %}">Series</a></li>
           <li><a href="{% url 'user:favorites' %}">Favoritos</a></li>
-          <li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
             <a href="{% url 'user:profile' %}">
-              <img src="{{ user.userprofile.avatar.url }}"  width="25px" height="25px" class="profile-image img-circle" style="margin-right: 2px;">
+              <img src="{{ user.userprofile.avatar.url }}"  width="25px" height="25px" class="img-circle" style="margin-right: 2px;">
               {{ data.username }}
             </a>
           </li>
+        <li><a href="{% url 'user:logout' %}">Salir</a></li>
       </ul>
-      <form class="navbar-form navbar-left" role="search" action="{% url 'catalogue:content' %}" method="get">
+      <form class="navbar-form navbar-right" role="search" action="{% url 'catalogue:content' %}" method="get">
         <div class="form-group">
           <form action="." method="GET" class="nav-bar-form">
             <div class="input-group">
@@ -48,9 +51,7 @@
           </form>
         </div>
       </form>
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="{% url 'user:logout' %}">Salir</a></li>
-      </ul>
+
         {% endif %}
     </div>
   </nav>

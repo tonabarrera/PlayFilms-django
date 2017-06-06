@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import render
 
@@ -26,15 +27,16 @@ def cargar_info_usuario(request):
 def buscar(request):
     content = None
     name = None
-
+    es_busqueda=False
     if request.method == 'GET':
         name = request.GET.get('q', None)
         if name is not None:
             print(name)
-            content = Content.objects.filter(title__contains=name)
+            es_busqueda = True
+            content = Content.objects.filter(Q(title__contains=name) | Q(category__name__contains=name) | Q(actors__name__contains=name))
     if name is None:
         content = Content.objects.all()
-    return content
+    return {'contenido':content, 'es_busqueda':es_busqueda, 'parametro': name}
 
 
 @premium_required
@@ -42,7 +44,10 @@ def buscar(request):
 def content_list(request):
     data = cargar_info_usuario(request)
     content = buscar(request)
-    return render(request, 'catalogo.html', {'catalogue': content, 'data': data})
+    return render(request, 'catalogo.html', {'catalogue': content['contenido'],
+                                             'data': data,
+                                             'es_busqueda':content['es_busqueda'],
+                                             'parametro': content['parametro']})
 
 
 @premium_required
