@@ -1,33 +1,84 @@
 {% extends 'base.html' %}
+{% load staticfiles %}
 {% block content %}
-  <div class="mejor-calificados">
+<link rel="stylesheet" href="{% static 'css/pelicula.css' %}">
+<div id="carousel1" class="carousel slide" data-ride="carousel" style='background-color: #000000;'>
+  <!-- Contenedor de las imagenes -->
+  <div class="carousel-inner" role="listbox">
+    <div class="item active" align="center">
+      <img src="\media\avatars\default_app_avatar_lrLdfT5.png" alt="PlayFilms" width="400px">
+      <div class="carousel-caption"> PlayFilms </div>
+    </div>
     {% for elemento in content %}
-      <img src="{{ elemento.cover.url }}" alt="{{ elemento.title }}" width="100px">
+    <div class="item" align="center" >
+      <img src="{{ elemento.cover.url }}" alt="{{ elemento.title }}" width="400px">
+      <div class="carousel-caption"> {{ elemento.title }} </div>
+    </div>
     {% endfor %}
   </div>
-  <p>{{ film.title }}</p>
-  <p id="puntaje">{{ film.score }}</p>
-  <p>{{ film.category }}</p>
-  <p>{{ film.get_type_of_content_display }}</p>
-  <p>Actores: </p>
-  <ul>
-    {% for actor in film.actors.all %}
-      <li>{{ actor.name }} {{ actor.role }}</li>
-    {% endfor %}
-  </ul>
-  <video controls width="500">
-    <source src="{{ film.content_file.url }}" type="video/mp4">
-    Your browser does not support the video element.
-  </video>
-  <form action="{% url 'catalogue:agregar' %}" method="GET" id="favorito">
+  <!-- Controls -->
+  <a class="left carousel-control" href="#carousel1" role="button" data-slide="prev">
+    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+    <span class="sr-only">Anterior</span>
+  </a>
+  <a class="right carousel-control" href="#carousel1" role="button" data-slide="next">
+    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+    <span class="sr-only">Siguiente</span>
+  </a>
+  </div>
+<br>
+ <div class="col-md-8 col-md-offset-2">
+<div class="panel panel-primary" align="center">
+  <div class="panel-heading">
+    <h1 class="panel-title">Datos Generales</h1>
+  </div>
+  <div class="panel-body">
+    <table class="table table-bordered">
+      <tr>
+        <tr>
+        <td><strong>{{ film.get_type_of_content_display }}</strong></td>
+        <td>{{ film.title }}</td>
+      </tr>
+        <td><strong>Calificación</strong></td>
+        <td>{{ film.score }}</td>
+      </tr>
+      <tr>
+          <td><strong>Categoría</strong></td>
+        <td>{{ film.category }}</td>
+      </tr>
+      <tr>
+        <td><strong>Actores</strong></td>
+        <td>
+          <ul>
+            {% for actor in film.actors.all %}
+              <li>{{ actor.name }} {{ actor.role }},</li>
+            {% endfor %}
+          </ul>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+   <div align="center">
+     <form action="{% url 'catalogue:agregar' %}" method="GET" id="favorito">
     <input type="text" value="{{ film.id }}" id="fav" hidden>
     <input type="submit" id="submit-favorito" value="{{ data.fav_submit }}">
   </form>
+     <br>
   <form action="{% url 'catalogue:puntuar' %}" method="GET" id="puntuar">
     <input type="number" min="0" max="10" id="calificacion" required>
     <input type="text" value="{{ film.id }}" id="calificacion-id" hidden>
     <input type="submit" value="Calificar">
   </form>
+     <br>
+   </div>
+
+  <video controls width=100%>
+    <source src="{{ film.content_file.url }}" type="video/mp4">
+    Your browser does not support the video element.
+  </video>
+ </div>
+
   <script>
       $("#favorito").on('submit', function (e) {
           e.preventDefault();

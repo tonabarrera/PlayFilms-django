@@ -1,0 +1,7 @@
+.carousel-inner > .item > img{
+    width: 400px;
+    height: 300px;
+}
+.panel primary > .panel-heading{
+    background-color: #000000;
+}
