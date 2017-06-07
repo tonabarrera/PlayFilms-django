@@ -27,7 +27,7 @@ def cargar_info_usuario(request):
     }
     return data
 
-
+# actualizar los datos de la tarjeta
 class LoginView(FormView):
     template_name = 'login.html'
     form_class = AuthenticationForm
@@ -42,7 +42,11 @@ class LoginView(FormView):
 
     def form_valid(self, form):
         print('login')
-        login(self.request, form.get_user())
+        user = form.get_user()
+        profile = user.userprofile
+        card = profile.creditcard
+        validar_tarjeta(card, profile)
+        login(self.request, user)
         return super(LoginView, self).form_valid(form)
 
 
@@ -54,7 +58,9 @@ def validar_tarjeta(card, profile):
     current_date = current_date.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
     if card_date>=current_date:
         profile.type_of_user = 1
-        profile.save()
+    else:
+        profile.type_of_user = 2
+    profile.save()
 
 
 def signUp_view(request):

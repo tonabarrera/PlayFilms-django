@@ -3,15 +3,22 @@ from django.db import models
 
 # Create your models here.
 class Actor(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, verbose_name='nombre')
     rol = models.CharField(max_length=45)
+
+    class Meta:
+        verbose_name_plural = 'actores'
 
     def __str__(self):
         return self.name
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, verbose_name='categoria')
+
+    class Meta:
+        verbose_name_plural = 'categorias'
+        verbose_name = 'categoria'
 
     def __str__(self):
         return self.name
@@ -22,16 +29,17 @@ class Content(models.Model):
         (1, "Pelicula"),
         (2, "Serie")
     )
-    title = models.CharField(max_length=100)
-    content_file = models.FileField(upload_to='content', blank=True)
-    score = models.FloatField(default=5)
-    actors = models.ManyToManyField(Actor, blank=True)
-    type_of_content = models.IntegerField(choices=type_of_content_choices)
-    category = models.ForeignKey(Category)
-    cover = models.ImageField(upload_to='covers', blank=True)
+    title = models.CharField(max_length=100, verbose_name='Titulo')
+    content_file = models.FileField(upload_to='content', blank=True, verbose_name='archivo de video')
+    score = models.FloatField(default=5, verbose_name='puntuación')
+    actors = models.ManyToManyField(Actor, blank=True, verbose_name='actores')
+    type_of_content = models.IntegerField(choices=type_of_content_choices, verbose_name='Tipo de contenido')
+    category = models.ForeignKey(Category, verbose_name='Categorias')
+    cover = models.ImageField(upload_to='covers', blank=True, verbose_name='Portada')
 
     class Meta():
         ordering = ['title', 'score']
+        verbose_name = verbose_name_plural = 'contenido'
 
     def __str__(self):
         return self.title
@@ -47,10 +55,13 @@ class Content(models.Model):
 
 
 class Episode(models.Model):
-    title = models.CharField(max_length=100)
-    order = models.PositiveIntegerField()
-    episode_file = models.FileField(upload_to='content')
+    title = models.CharField(max_length=100, verbose_name='Titulo')
+    order = models.PositiveIntegerField(verbose_name='Orden')
+    episode_file = models.FileField(upload_to='content', verbose_name='Archivo del episodio')
     serie = models.ForeignKey(Content, on_delete=models.CASCADE)
 
+    class Meta:
+        verbose_name = 'Episodio'
+        verbose_name_plural = 'Episodios'
     def __str__(self):
         return self.title
