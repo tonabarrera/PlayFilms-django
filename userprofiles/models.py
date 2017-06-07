@@ -14,9 +14,13 @@ class UserProfile(models.Model):
         (2, 'Estandar')
     )
     user = models.OneToOneField(User)
-    type_of_user = models.IntegerField(choices=type_of_user_choices, default=2)
+    type_of_user = models.IntegerField(choices=type_of_user_choices, default=2, verbose_name='tipo de usuario')
     avatar = models.ImageField(upload_to='avatars/', blank=True, default='avatars/default_app_avatar.png')
     favorites = models.ManyToManyField(Content, through='History')
+
+    class Meta:
+        verbose_name = 'Perfil de usuario'
+        verbose_name_plural = 'Perfiles de usuario'
 
     def email(self):
         return self.user.email
@@ -25,10 +29,13 @@ class UserProfile(models.Model):
 
 
 class History(models.Model):
-    user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-    content = models.ForeignKey(Content, on_delete=models.CASCADE)
-    score = models.PositiveIntegerField(blank=True, default=5)
-    is_favorite = models.BooleanField(default=False)
+    user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, verbose_name='perfil de usuario')
+    content = models.ForeignKey(Content, on_delete=models.CASCADE, verbose_name='contenido')
+    score = models.PositiveIntegerField(blank=True, default=5, verbose_name='puntuación')
+    is_favorite = models.BooleanField(default=False, verbose_name='es favorito')
+
+    class Meta:
+        verbose_name = verbose_name_plural= 'Historial'
 
     def save(self, *args, **kwargs):
         super(History, self).save(*args, **kwargs)
@@ -60,4 +67,11 @@ class CreditCard(models.Model):
     due_month = models.CharField(max_length=2, choices=MONTH_CHOICES, verbose_name='Mes')
     due_year = models.CharField(max_length=2, choices=YEAR_CHOICES, verbose_name='Año')
     CVV = models.CharField(max_length=4, validators=[RegexValidator(r'^\d{1,10}$')])
-    user_profile = models.OneToOneField(UserProfile)
+    user_profile = models.OneToOneField(UserProfile, verbose_name='perfil de usuario')
+
+    class Meta:
+        verbose_name = 'tarjeta de credito'
+        verbose_name_plural = 'Tarjetas de credito'
+
+    def __str__(self):
+        return self.user_profile.user.username + ': ' + self.number
