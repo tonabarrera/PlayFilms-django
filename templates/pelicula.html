@@ -1,17 +1,16 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% block content %}
-<link rel="stylesheet" href="{% static 'css/pelicula.css' %}">
+<link rel="stylesheet" href="{% static 'css/carousel.css' %}">
 <div id="carousel1" class="carousel slide" data-ride="carousel" style='background-color: #000000;'>
   <!-- Contenedor de las imagenes -->
   <div class="carousel-inner" role="listbox">
     <div class="item active" align="center">
-      <img src="\media\avatars\default_app_avatar_lrLdfT5.png" alt="PlayFilms" width="400px">
-      <div class="carousel-caption"> PlayFilms </div>
+      <img src="\media\avatars\logo.png" alt="PlayFilms" width="1000px">
     </div>
     {% for elemento in content %}
     <div class="item" align="center" >
-      <img src="{{ elemento.cover.url }}" alt="{{ elemento.title }}" width="400px">
+      <img src="{{ elemento.cover.url }}" alt="{{ elemento.title }}" width="400px" height="300">
       <div class="carousel-caption"> {{ elemento.title }} </div>
     </div>
     {% endfor %}
@@ -35,16 +34,16 @@
   <div class="panel-body">
     <table class="table table-bordered">
       <tr>
-        <tr>
         <td><strong>{{ film.get_type_of_content_display }}</strong></td>
         <td>{{ film.title }}</td>
       </tr>
-        <td><strong>Calificación</strong></td>
-        <td>{{ film.score }}</td>
-      </tr>
       <tr>
           <td><strong>Categoría</strong></td>
-        <td>{{ film.category }}</td>
+          <td>{{ film.category }}</td>
+      </tr>
+      <tr>
+        <td><strong>Calificación</strong></td>
+        <td>{{ film.score }}</td>
       </tr>
       <tr>
         <td><strong>Actores</strong></td>
