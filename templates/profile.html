@@ -16,7 +16,7 @@
             </div>
           </div>
           <img src="{{ user.userprofile.avatar.url }}"  width="100px" height="100px" class="img-circle center-block">
-          <form action="" method="POST">
+          <form action="" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             {% for field in uform %}
               <div class="form-group">
@@ -49,6 +49,12 @@
             {% endfor %}
             <div class="form-group ">
               <input type="submit" value="Guardar datos" class="btn btn-primary pull-right"/>
+            </div>
+          </form>
+          <form action="{% url 'user:borrar' %}" method="POST" name="borrar-form" >
+            {% csrf_token %}
+            <div class="form-group ">
+              <input type="submit" value="Cancelar cuenta" name='borrar' class="btn btn-danger pull-right"/>
             </div>
           </form>
         </div>

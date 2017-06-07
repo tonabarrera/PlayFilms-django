@@ -11,6 +11,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect
 from django.views.generic import FormView, RedirectView, ListView
 
+from PlayFilms.mixins import PremiumRequiredMixin
 from catalogue.models import Content
 from userprofiles.forms import UserForm, UserProfileForm, CreditCardForm
 
@@ -26,6 +27,7 @@ def cargar_info_usuario(request):
         'username': username,
     }
     return data
+
 
 # actualizar los datos de la tarjeta
 class LoginView(FormView):
@@ -56,7 +58,7 @@ def validar_tarjeta(card, profile):
     card_date = datetime(card_year, card_month, 1)
     current_date = datetime.now()
     current_date = current_date.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
-    if card_date>=current_date:
+    if card_date >= current_date:
         profile.type_of_user = 1
     else:
         profile.type_of_user = 2
@@ -98,7 +100,7 @@ class LoginRedirectView(RedirectView):
     pattern_name = 'user:login'
 
 
-class FavoritesListView(LoginRequiredMixin, ListView):
+class FavoritesListView(PremiumRequiredMixin, LoginRequiredMixin, ListView):
     model = Content
     template_name = 'catalogo.html'
     context_object_name = 'catalogue'
@@ -155,7 +157,47 @@ def send_email(subject, message, html, from_email, destination):
 @login_required(login_url='/user/login/')
 def profile_view(request):
     data = cargar_info_usuario(request)
-    uform = UserForm()
-    pform = UserProfileForm()
-    cform = CreditCardForm()
+    user = User.objects.get(username=request.user.username)
+    profile = user.userprofile
+    card = profile.creditcard
+    uform = UserForm(request.POST or None, instance=user)
+    pform = UserProfileForm(request.POST or None, request.FILES, instance=profile)
+    cform = CreditCardForm(request.POST or None, instance=card)
+
+    if request.POST and cform.is_valid():
+        new_card = cform.save()
+        new_profile = profile
+        validar_tarjeta(new_card, new_profile)
+        uform = UserForm(instance=user)
+        prepare_email_data(user)
+    else:
+        if request.method == 'POST':
+            if pform.is_valid():
+                pform.save()
+                prepare_email_data(user)
+        if request.POST and uform.is_valid():
+            new_user = uform.save()
+            cform = CreditCardForm(instance=new_user.userprofile.creditcard)
+            login(request, new_user)
+            prepare_email_data(new_user)
+        else:
+            uform = UserForm(instance=user)
+
     return render(request, 'profile.html', {'uform': uform, 'pform': pform, 'cform': cform, 'data': data})
+
+
+def prepare_email_data(user):
+    subject = 'Modificación de datos personales'
+    message_text = 'PlayFilms,'
+    message_html = '<p>Hola <strong>%s</strong>, se han modificado algunos datos de tu cuenta.</p>' % (
+        user.first_name)
+    FROM_EMAIL = '"PlayFilms" <playfilms.email@gmail.com>'
+    destination = user.email
+    send_email(subject, message_text, message_html, FROM_EMAIL, destination)
+
+def borrar_view(request):
+    if request.method=='POST':
+        user = request.user
+        user.is_active = False
+        user.save()
+    return redirect('/user/logout')
