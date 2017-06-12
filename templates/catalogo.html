@@ -7,24 +7,43 @@
       <h2>Los resultados de la busqueda "{{ parametro }}" fueron:</h2>
     {% endif %}
   {% endif %}
+    <script type="text/javascript" src="./listas.js"></script>
+    <div class="container">
+        <div class="well well-sm">
+            <strong>Visualizar </strong>
+            <div class="btn-group">
+                <a href="#" id="list" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-th-list">
+                </span> List</a> <a href="#" id="grid" class="btn btn-default btn-sm"><span
+                    class="glyphicon glyphicon-th"></span> Grid</a>
+            </div>
+        </div>
+    <div id="products" class="row list-group">
   {% for element in catalogue %}
-    <div style="border:1px solid black;">
-      {% if element.type_of_content == 1 %}
-        <a href="{% url 'catalogue:pelicula' pk=element.pk %}">{{ element }}</a>
-      {% else %}
-        <a href="{% url 'catalogue:serie' pk=element.pk %}">{{ element }}</a>
-      {% endif %}
-
-      <p>{{ element.score }}</p>
-      <figure>
-        <img src="{{ element.cover.url }}" alt="{{ element }}" width="200">
-      </figure>
-      <p>{{ element.category }}</p>
-      {% if element.type_of_content == 1 %}
-        <p>Pelicula</p>
-      {% else %}
-        <p>Serie</p>
-      {% endif %}
-    </div>
+        <div class="item  col-xs-4 col-lg-4">
+            <div class="thumbnail">
+                <img class="group list-group-image" src="{{ element.cover.url }}" alt="{{ element }}" />
+                <div class="caption">
+                    <h4 class="group inner list-group-item-heading">
+                        {% if element.type_of_content == 1 %}
+                        <a href="{% url 'catalogue:pelicula' pk=element.pk %}">{{ element }}</a>
+                      {% else %}
+                        <a href="{% url 'catalogue:serie' pk=element.pk %}">{{ element }}</a>
+                      {% endif %}</h4>
+                    <p class="group inner list-group-item-text">
+                        Descripcion de la pelicula/serie.</p>
+                    <div class="row">
+                        <div class="col-xs-12 col-md-6">
+                            <p class="lead">
+                                {{ element.score }}</p>
+                        </div>
+                        <div class="col-xs-12 col-md-6">
+                            <a class="btn btn-success" href="Categoria">{{ element.category }}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
   {% endfor %}
+    </div>
+   </div>
 {% endblock %}
