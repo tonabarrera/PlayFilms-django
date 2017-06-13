@@ -1,12 +1,12 @@
 from django.contrib import admin
 
 # Register your models here.
-from catalogue.models import Content, Actor, Category, Episode
+from catalogue.models import Content, Actor, Genre, Episode
 
 
 @admin.register(Content)
 class ContentAdmin(admin.ModelAdmin):
-    list_display = ('title', 'score', 'type_of_content', 'category',)
+    list_display = ('title', 'score', 'type_of_content', 'genre',)
 
 
 @admin.register(Actor)
@@ -14,8 +14,8 @@ class ActorAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(Category)
-class CategoryAdmin(admin.ModelAdmin):
+@admin.register(Genre)
+class GenreAdmin(admin.ModelAdmin):
     pass
 
 

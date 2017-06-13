@@ -1,0 +1,11 @@
+img.extra {
+    width: 400px;
+    height: 250px;
+}
+
+a.no-hover:hover {
+    color: #fff;
+    background-color: #5cb85c;
+    border-color: #4cae4c;
+    cursor: default;
+}

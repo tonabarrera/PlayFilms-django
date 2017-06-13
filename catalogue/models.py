@@ -13,12 +13,12 @@ class Actor(models.Model):
         return self.name
 
 
-class Category(models.Model):
-    name = models.CharField(max_length=100, verbose_name='categoria')
+class Genre(models.Model):
+    name = models.CharField(max_length=100, verbose_name='genero')
 
     class Meta:
-        verbose_name_plural = 'categorias'
-        verbose_name = 'categoria'
+        verbose_name_plural = 'generos'
+        verbose_name = 'genero'
 
     def __str__(self):
         return self.name
@@ -34,8 +34,9 @@ class Content(models.Model):
     score = models.FloatField(default=5, verbose_name='puntuación')
     actors = models.ManyToManyField(Actor, blank=True, verbose_name='actores')
     type_of_content = models.IntegerField(choices=type_of_content_choices, verbose_name='Tipo de contenido')
-    category = models.ForeignKey(Category, verbose_name='Categorias')
+    genre = models.ForeignKey(Genre, verbose_name='Genero')
     cover = models.ImageField(upload_to='covers', blank=True, verbose_name='Portada')
+    description = models.CharField(max_length=250, verbose_name='Descripcion')
 
     class Meta():
         ordering = ['title', 'score']
