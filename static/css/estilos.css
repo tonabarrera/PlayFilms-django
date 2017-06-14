@@ -1,0 +1,25 @@
+.wrap-flex {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.elemento {
+    max-width: 350px;
+    width: 350px;
+    margin-bottom: 1em;
+    background-color: #fff;
+    border: 1px solid #ddd
+}
+
+.datos {
+    display:flex;
+    justify-content: space-between;
+}
+
+.informacion {
+    display:flex;
+    flex-direction: column;
+    padding: 2px;
+    align-content: space-around;
+}

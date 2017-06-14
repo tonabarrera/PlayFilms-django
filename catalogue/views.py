@@ -1,17 +1,21 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import render
+from django.views.generic import ListView
 
 from PlayFilms import settings
-from PlayFilms.mixins import premium_required
+from PlayFilms.mixins import premium_required, PremiumRequiredMixin
 from catalogue.models import Content, Episode
 
 # Create your views here.
 from userprofiles.models import History
 
+
 def mejor_calificados():
     return Content.objects.all().order_by('-score')[0:5]
+
 
 def cargar_info_usuario(request):
     is_auth = False
@@ -78,10 +82,19 @@ def film_detail(request, pk):
     content = mejor_calificados()
     if History.objects.filter(user_profile=temp_user, content=film, is_favorite=True).exists():
         data['fav_submit'] = 'Quitar de favoritos'
+        data['class_fav'] = 'btn-danger'
     else:
         data['fav_submit'] = 'Agregar a favoritos'
+        data['class_fav'] = 'btn-default'
+    try:
+        aux_score = History.objects.get(user_profile=temp_user, content=film)
+    except History.DoesNotExist:
+        aux_score = None
 
-    return render(request, 'pelicula.html', {'film': film, 'data': data, 'content':content})
+    if aux_score is not None:
+        data['mi_puntaje'] = aux_score.score
+
+    return render(request, 'pelicula.html', {'film': film, 'data': data, 'content': content})
 
 
 @login_required(login_url='/user/login/')
@@ -93,9 +106,20 @@ def serie_detail(request, pk):
     temp_user = request.user.userprofile
     if History.objects.filter(user_profile=temp_user, content=serie, is_favorite=True).exists():
         data['fav_submit'] = 'Quitar de favoritos'
+        data['class_fav'] = 'btn-danger'
     else:
         data['fav_submit'] = 'Agregar a favoritos'
-    return render(request, 'serie.html', {'serie': serie, 'data': data, 'content':content})
+        data['class_fav'] = 'btn-default'
+
+    try:
+        aux_score = History.objects.get(user_profile=temp_user, content=serie)
+    except History.DoesNotExist:
+        aux_score = None
+
+    if aux_score is not None:
+        data['mi_puntaje'] = aux_score.score
+
+    return render(request, 'serie.html', {'serie': serie, 'data': data, 'content': content})
 
 
 @login_required(login_url='/user/login/')
@@ -104,7 +128,7 @@ def episode_detail(request, pk):
     episode = Episode.objects.get(pk=pk)
     data = cargar_info_usuario(request)
     content = mejor_calificados()
-    return render(request, 'episode.html', {'episode': episode, 'data': data, 'content':content})
+    return render(request, 'episode.html', {'episode': episode, 'data': data, 'content': content})
 
 
 def agregar_favorito_view(request):
@@ -144,3 +168,23 @@ def puntuar_view(request):
             data['puntaje'] = Content.objects.get(id=pk).score
             data['ok'] = True
     return JsonResponse(data)
+
+
+class GenreListView(PremiumRequiredMixin, LoginRequiredMixin, ListView):
+    model = Content
+    context_object_name = 'catalogue'
+    template_name = 'catalogo.html'
+    login_url = '/user/login'
+
+    def get_queryset(self):
+        if self.kwargs.get('genre'):
+            queryset = self.model.objects.filter(genre__name__contains=self.kwargs['genre'])
+        else:
+            queryset = super(GenreListView, self).get_queryset()
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super(GenreListView, self).get_context_data(**kwargs)
+        data = cargar_info_usuario(self.request)
+        context['data'] = data
+        return context

@@ -1,57 +1,74 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% block content %}
-<link rel="stylesheet" href="{% static 'css/carousel.css' %}">
-<div id="carousel1" class="carousel slide" data-ride="carousel" style='background-color: #000000;'>
-  <!-- Contenedor de las imagenes -->
-  <div class="carousel-inner" role="listbox">
-    <div class="item active" align="center">
-      <img src="\media\avatars\logo.png" alt="PlayFilms" width="1000px">
-      <div class="carousel-caption"> PlayFilms </div>
+  <link rel="stylesheet" href="{% static 'css/carousel.css' %}">
+  <h3 class="page-header">Top 5 mejores peliculas</h3>
+  <div id="carousel1" class="carousel slide" data-ride="carousel" style='background-color: #000000;'>
+    <!-- Contenedor de las imagenes -->
+    <div class="carousel-inner" role="listbox">
+      <div class="item active" align="center">
+        <img src="{% static 'images/logo.png' %}" alt="PlayFilms" width="1000px">
+      </div>
+      {% for elemento in content %}
+        <div class="item" align="center">
+          {% if elemento.type_of_content == 1 %}
+            <a href="{% url 'catalogue:pelicula' pk=elemento.pk %}">
+              <img src="{{ elemento.cover.url }}" alt="{{ elemento.title }}" width="500px" height="300px">
+              <div class="carousel-caption"><h1>{{ elemento.title }}</h1></div>
+            </a>
+          {% else %}
+            <a href="{% url 'catalogue:serie' pk=elemento.pk %}">
+              <img src="{{ elemento.cover.url }}" alt="{{ elemento.title }}" width="500px" height="300px">
+              <div class="carousel-caption"><h1>{{ elemento.title }}</h1></div>
+            </a>
+          {% endif %}
+        </div>
+      {% endfor %}
     </div>
-    {% for elemento in content %}
-    <div class="item" align="center" >
-      <img src="{{ elemento.cover.url }}" alt="{{ elemento.title }}" width="400px">
-      <div class="carousel-caption"> {{ elemento.title }} </div>
+    <!-- Controls -->
+    <a class="left carousel-control" href="#carousel1" role="button" data-slide="prev">
+      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+      <span class="sr-only">Anterior</span>
+    </a>
+    <a class="right carousel-control" href="#carousel1" role="button" data-slide="next">
+      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+      <span class="sr-only">Siguiente</span>
+    </a>
+  </div>
+  <br>
+  <div class="col-md-8 col-md-offset-2">
+    <div class="panel panel-primary" align="center">
+      <div class="panel-heading">
+        <h1 class="panel-title">Datos Generales</h1>
+      </div>
+      <div class="panel-body">
+        <table class="table table-bordered">
+          <tr>
+            <td><strong> Serie </strong></td>
+            <td>{{ episode.serie }}</td>
+          </tr>
+          <tr>
+            <td><strong>Episodio</strong></td>
+            <td>{{ episode.title }}</td>
+          </tr>
+          <tr>
+            <td><strong> Capítulo </strong></td>
+            <td>{{ episode.order }}</td>
+          </tr>
+        </table>
+      </div>
     </div>
-    {% endfor %}
-  </div>
-  <!-- Controls -->
-  <a class="left carousel-control" href="#carousel1" role="button" data-slide="prev">
-    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-    <span class="sr-only">Anterior</span>
-  </a>
-  <a class="right carousel-control" href="#carousel1" role="button" data-slide="next">
-    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-    <span class="sr-only">Siguiente</span>
-  </a>
-  </div>
-<br>
- <div class="col-md-8 col-md-offset-2">
-<div class="panel panel-primary" align="center">
-  <div class="panel-heading">
-    <h1 class="panel-title">Datos Generales</h1>
-  </div>
-  <div class="panel-body">
-    <table class="table table-bordered">
-      <tr>
-        <td><strong> Serie </strong></td>
-        <td>{{ episode.serie }}</td>
-      </tr>
-      <tr>
-        <td><strong>Episodio</strong></td>
-        <td>{{ episode.title }}</td>
-      </tr>
-      <tr>
-        <td><strong> Capítulo </strong></td>
-        <td>{{ episode.order }}</td>
-      </tr>
-      </table>
-  </div>
-</div>
-    <video controls width="100%">
+    {% if episode.episode_file.file is not None %}
+      <video controls width=100%>
         <source src="{{ episode.episode_file.url }}" type="video/mp4">
+        <source src="{{ episode.episode_file.url }}" type="video/3gp">
+        <source src="{{ episode.episode_file.url }}" type="video/ogg">
         Your browser does not support the video element.
-    </video>
+      </video>
+    {% else %}
+      <div class="center text-center">
+        <img src="{{ episode.serie.cover.url }}" alt="">
+      </div>
+    {% endif %}
   </div>
 {% endblock %}

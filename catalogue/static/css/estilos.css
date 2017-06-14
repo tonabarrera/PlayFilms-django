@@ -1,11 +1,25 @@
-img.extra {
-    width: 400px;
-    height: 250px;
+.wrap-flex {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
 }
 
-a.no-hover:hover {
-    color: #fff;
-    background-color: #5cb85c;
-    border-color: #4cae4c;
-    cursor: default;
+.elemento {
+    max-width: 350px;
+    width: 350px;
+    margin-bottom: 1em;
+    background-color: #fff;
+    border: 1px solid #ddd
+}
+
+.datos {
+    display:flex;
+    justify-content: space-between;
+}
+
+.informacion {
+    display:flex;
+    flex-direction: column;
+    padding: 2px;
+    align-content: space-around;
 }

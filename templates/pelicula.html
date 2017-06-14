@@ -1,82 +1,104 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% block content %}
-<link rel="stylesheet" href="{% static 'css/carousel.css' %}">
-<div id="carousel1" class="carousel slide" data-ride="carousel" style='background-color: #000000;'>
-  <!-- Contenedor de las imagenes -->
-  <div class="carousel-inner" role="listbox">
-    <div class="item active" align="center">
-      <img src="\media\avatars\logo.png" alt="PlayFilms" width="1000px">
+  <link rel="stylesheet" href="{% static 'css/carousel.css' %}">
+  <h3 class="page-header">Top 5 mejores peliculas</h3>
+  <div id="carousel1" class="carousel slide" data-ride="carousel" style='background-color: #000000;'>
+    <!-- Contenedor de las imagenes -->
+    <div class="carousel-inner" role="listbox">
+      <div class="item active" align="center">
+        <img src="{% static 'images/logo.png' %}" alt="PlayFilms" width="1000px">
+      </div>
+      {% for elemento in content %}
+        <div class="item" align="center">
+          {% if elemento.type_of_content == 1 %}
+            <a href="{% url 'catalogue:pelicula' pk=elemento.pk %}">
+              <img src="{{ elemento.cover.url }}" alt="{{ elemento.title }}" width="500px" height="300px">
+              <div class="carousel-caption"><h1>{{ elemento.title }}</h1></div>
+            </a>
+          {% else %}
+            <a href="{% url 'catalogue:serie' pk=elemento.pk %}">
+              <img src="{{ elemento.cover.url }}" alt="{{ elemento.title }}" width="500px" height="300px">
+              <div class="carousel-caption"><h1>{{ elemento.title }}</h1></div>
+            </a>
+          {% endif %}
+        </div>
+      {% endfor %}
     </div>
-    {% for elemento in content %}
-    <div class="item" align="center" >
-      <img src="{{ elemento.cover.url }}" alt="{{ elemento.title }}" width="400px" height="300">
-      <div class="carousel-caption"> {{ elemento.title }} </div>
+    <!-- Controls -->
+    <a class="left carousel-control" href="#carousel1" role="button" data-slide="prev">
+      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+      <span class="sr-only">Anterior</span>
+    </a>
+    <a class="right carousel-control" href="#carousel1" role="button" data-slide="next">
+      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+      <span class="sr-only">Siguiente</span>
+    </a>
+  </div>
+  <br>
+  <div class="col-md-8 col-md-offset-2">
+    <div class="panel panel-primary" align="center">
+      <div class="panel-heading">
+        <h1 class="panel-title">Datos Generales</h1>
+      </div>
+      <div class="panel-body">
+        <table class="table table-bordered">
+          <tr>
+            <td><strong>{{ film.get_type_of_content_display }}</strong></td>
+            <td>{{ film.title }}</td>
+          </tr>
+          <tr>
+            <td><strong>Descripción</strong></td>
+            <td>{{ film.description }}</td>
+          </tr>
+          <tr>
+            <td><strong>Genero</strong></td>
+            <td>{{ film.genre }}</td>
+          </tr>
+          <tr>
+            <td><strong>Calificación</strong></td>
+            <td id="puntaje">{{ film.score }}</td>
+          </tr>
+          <tr>
+            <td><strong>Actores</strong></td>
+            <td>
+              <ul>
+                {% for actor in film.actors.all %}
+                  <li>{{ actor.name }}, {{ actor.rol }}</li>
+                {% endfor %}
+              </ul>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="contenedor-acciones">
+        <form action="{% url 'catalogue:agregar' %}" method="GET" id="favorito">
+          <input type="text" value="{{ film.id }}" id="fav" hidden>
+          <input type="submit" id="submit-favorito" value="{{ data.fav_submit }}" class="btn {{ data.class_fav }}">
+        </form>
+        <br>
+        <form action="{% url 'catalogue:puntuar' %}" method="GET" id="puntuar">
+          <input type="number" min="0" max="10" id="calificacion" value="{{ data.mi_puntaje }}" required>
+          <input type="text" value="{{ film.id }}" id="calificacion-id" hidden>
+          <input type="submit" value="Calificar" class="btn btn-success">
+        </form>
+        <br>
+      </div>
     </div>
-    {% endfor %}
-  </div>
-  <!-- Controls -->
-  <a class="left carousel-control" href="#carousel1" role="button" data-slide="prev">
-    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-    <span class="sr-only">Anterior</span>
-  </a>
-  <a class="right carousel-control" href="#carousel1" role="button" data-slide="next">
-    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-    <span class="sr-only">Siguiente</span>
-  </a>
-  </div>
-<br>
- <div class="col-md-8 col-md-offset-2">
-<div class="panel panel-primary" align="center">
-  <div class="panel-heading">
-    <h1 class="panel-title">Datos Generales</h1>
-  </div>
-  <div class="panel-body">
-    <table class="table table-bordered">
-      <tr>
-        <td><strong>{{ film.get_type_of_content_display }}</strong></td>
-        <td>{{ film.title }}</td>
-      </tr>
-      <tr>
-          <td><strong>Categoría</strong></td>
-          <td>{{ film.category }}</td>
-      </tr>
-      <tr>
-        <td><strong>Calificación</strong></td>
-        <td id="puntaje">{{ film.score }}</td>
-      </tr>
-      <tr>
-        <td><strong>Actores</strong></td>
-        <td>
-          <ul>
-            {% for actor in film.actors.all %}
-              <li>{{ actor.name }} {{ actor.role }},</li>
-            {% endfor %}
-          </ul>
-        </td>
-      </tr>
-    </table>
-  </div>
-</div>
-   <div align="center">
-     <form action="{% url 'catalogue:agregar' %}" method="GET" id="favorito">
-    <input type="text" value="{{ film.id }}" id="fav" hidden>
-    <input type="submit" id="submit-favorito" value="{{ data.fav_submit }}">
-  </form>
-     <br>
-  <form action="{% url 'catalogue:puntuar' %}" method="GET" id="puntuar">
-    <input type="number" min="0" max="10" id="calificacion" required>
-    <input type="text" value="{{ film.id }}" id="calificacion-id" hidden>
-    <input type="submit" value="Calificar">
-  </form>
-     <br>
-   </div>
 
-  <video controls width=100%>
-    <source src="{{ film.content_file.url }}" type="video/mp4">
-    Your browser does not support the video element.
-  </video>
- </div>
+    {% if film.content_file.file is not None %}
+      <video controls width=100%>
+        <source src="{{ film.content_file.url }}" type="video/mp4">
+        <source src="{{ film.content_file.url }}" type="video/3gp">
+        <source src="{{ film.content_file.url }}" type="video/ogg">
+        Your browser does not support the video element.
+      </video>
+    {% else %}
+      <div class="center text-center">
+        <img src="{{ film.cover.url }}" alt="">
+      </div>
+    {% endif %}
+  </div>
 
   <script>
       $("#favorito").on('submit', function (e) {
@@ -88,9 +110,9 @@
               success: function (json) {
                   console.log("Es favorito: " + json.favorito);
                   if (json.favorito)
-                      $("#submit-favorito").val("Quitar de favoritos");
+                      $("#submit-favorito").val("Quitar de favoritos").removeClass('btn-default').addClass('btn-danger');
                   else
-                      $("#submit-favorito").val("Agregar a favoritos");
+                      $("#submit-favorito").val("Agregar a favoritos").removeClass('btn-danger').addClass('btn-default');
               },
               error: function (xhr, errmsg, err) {
                   consolo.log("ERROR: " + err);

@@ -35,7 +35,7 @@ class Content(models.Model):
     actors = models.ManyToManyField(Actor, blank=True, verbose_name='actores')
     type_of_content = models.IntegerField(choices=type_of_content_choices, verbose_name='Tipo de contenido')
     genre = models.ForeignKey(Genre, verbose_name='Genero')
-    cover = models.ImageField(upload_to='covers', blank=True, verbose_name='Portada')
+    cover = models.ImageField(upload_to='covers', verbose_name='Portada')
     description = models.CharField(max_length=250, verbose_name='Descripcion')
 
     class Meta():
@@ -59,7 +59,7 @@ class Episode(models.Model):
     title = models.CharField(max_length=100, verbose_name='Titulo')
     order = models.PositiveIntegerField(verbose_name='Orden')
     episode_file = models.FileField(upload_to='content', verbose_name='Archivo del episodio')
-    serie = models.ForeignKey(Content, on_delete=models.CASCADE)
+    serie = models.ForeignKey(Content, on_delete=models.CASCADE, limit_choices_to={'type_of_content':2})
 
     class Meta:
         verbose_name = 'Episodio'

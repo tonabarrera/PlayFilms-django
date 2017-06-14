@@ -7,34 +7,40 @@
       <h2>Los resultados de la busqueda "{{ parametro }}" fueron:</h2>
     {% endif %}
   {% endif %}
-    <div class="container">
-    <div id="products" class="row list-group">
-  {% for element in catalogue %}
-        <div class="item  col-xs-4 col-lg-4">
-            <div class="thumbnail">
-                <img class="group list-group-image extra" src="{{ element.cover.url }}" alt="{{ element }}" width="400" height="250"/>
-                <div class="caption">
-                    <h4 class="group inner list-group-item-heading">
-                        {% if element.type_of_content == 1 %}
-                        <a href="{% url 'catalogue:pelicula' pk=element.pk %}">{{ element }}</a>
-                      {% else %}
-                        <a href="{% url 'catalogue:serie' pk=element.pk %}">{{ element }}</a>
-                      {% endif %}</h4>
-                    <p class="group inner list-group-item-text">
-                        {{ element.description }}</p>
-                    <div class="row">
-                        <div class="col-xs-12 col-md-6">
-                            <p class="lead">
-                                Puntuación: {{ element.score }}</p>
-                        </div>
-                        <div class="col-xs-12 col-md-6">
-                            <a class="btn btn-success no-hover">{{ element.genre }}</a>
-                        </div>
-                    </div>
+  <div class="container">
+    <div class="wrap-flex">
+      {% for element in catalogue %}
+        <div class="elemento">
+          <div class="">
+            <img class="" src="{{ element.cover.url }}" alt="{{ element }}" width="349" height="250"/>
+            <div class="informacion">
+              <h4 class="">
+                {% if element.type_of_content == 1 %}
+                  <a href="{% url 'catalogue:pelicula' pk=element.pk %}">{{ element }}</a>
+                {% else %}
+                  <a href="{% url 'catalogue:serie' pk=element.pk %}">{{ element }}</a>
+                {% endif %}</h4>
+              <p class="">
+                {{ element.description }}
+              </p>
+              <div class="datos">
+                <div class="">
+                  <p class="lead">
+                    Puntuación: {{ element.score }}</p>
                 </div>
+                <div class="">
+                  <a class="btn btn-success no-hover"
+                     href="{% url 'catalogue:generos' genre=element.genre %}">{{ element.genre }}</a>
+                </div>
+
+              </div>
+              <div>
+                <h4><span class="label label-info">{{ element.get_type_of_content_display }}</span></h4>
+              </div>
             </div>
+          </div>
         </div>
-  {% endfor %}
+      {% endfor %}
     </div>
-   </div>
+  </div>
 {% endblock %}
