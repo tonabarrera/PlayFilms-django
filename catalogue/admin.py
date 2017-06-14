@@ -6,12 +6,12 @@ from catalogue.models import Content, Actor, Genre, Episode
 
 @admin.register(Content)
 class ContentAdmin(admin.ModelAdmin):
-    list_display = ('title', 'score', 'type_of_content', 'genre',)
+    list_display = ('title', 'score', 'type_of_content', 'genre', 'description',)
 
 
 @admin.register(Actor)
 class ActorAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('name', 'rol',)
 
 
 @admin.register(Genre)
