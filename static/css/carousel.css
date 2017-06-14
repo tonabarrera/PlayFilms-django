@@ -1,7 +1,17 @@
 .carousel-inner > .item > img{
     height: 300px;
-    max-height: 300px;
+}
+
+.carousel-inner > .item >a> img{
+    height: 300px;
 }
 .panel primary > .panel-heading{
     background-color: #000000;
+}
+
+.contenedor-acciones {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: .5rem;
 }

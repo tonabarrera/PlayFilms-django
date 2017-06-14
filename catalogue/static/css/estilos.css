@@ -20,6 +20,6 @@
 .informacion {
     display:flex;
     flex-direction: column;
-    padding: 2px;
+    padding: 0 .4rem;
     align-content: space-around;
 }
