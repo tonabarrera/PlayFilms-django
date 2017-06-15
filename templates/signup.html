@@ -20,38 +20,20 @@
       </div>
     </div>
     <div class="main-login main-center">
-    <!--Poner bien lo de recupear contraseña-->
       <form action="" method="POST" class="form-horizontal" enctype="multipart/form-data">
-      {% csrf_token %}
-        {% for field in uform %}
-          <div class="form-group">
-            {{ field.label_tag }}
-            {{ field }}
-          </div>
-        {% endfor %}
-        {% for field in pform %}
-          <div class="form-group">
-            {{ field.label_tag }}
-            {{ field }}
-          </div>
-        {% endfor %}
-        {% for field in cform %}
-          <div class="form-group">
-            {{ field.label_tag }}
-            {{ field }}
-          </div>
-        {% endfor %}
-      <div class="form-group ">
-        <input type="submit" value="Crear cuenta" class="btn btn-primary btn-lg btn-block login-button"/>
-      </div>
-      <div class="login-register">
-        <p>¿Ya tienes una cuenta? <a href="{% url 'user:login' %}">Inicia Sesión</a></p>
-      </div>
+        {% csrf_token %}
+        {{ uform.as_p }}
+        {{ pform.as_p }}
+        {{ cform.as_p }}
+        <div class="form-group ">
+          <input type="submit" value="Crear cuenta" class="btn btn-primary btn-lg btn-block login-button"/>
+        </div>
+        <div class="login-register">
+          <p>¿Ya tienes una cuenta? <a href="{% url 'user:login' %}">Inicia Sesión</a></p>
+        </div>
       </form>
     </div>
-
   </div>
 </div>
-
 </body>
 </html>

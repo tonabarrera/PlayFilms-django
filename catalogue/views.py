@@ -40,7 +40,7 @@ def buscar(request):
             print(name)
             es_busqueda = True
             content = Content.objects.filter(
-                Q(title__contains=name) | Q(category__name__startswith=name) | Q(category__name__endswith=name))
+                Q(title__contains=name) | Q(genre__name__startswith=name) | Q(genre__name__endswith=name)).distinct()
     if name is None:
         content = Content.objects.all()
     return {'contenido': content, 'es_busqueda': es_busqueda, 'parametro': name}

@@ -17,6 +17,6 @@ class UserHistoryAdmin(admin.ModelAdmin):
 
 @admin.register(CreditCard)
 class CreditCardAdmin(admin.ModelAdmin):
-    list_display = ('owner', 'number', 'due_month', 'due_year')
+    list_display = ('user_profile', 'owner', 'number', 'due_month', 'due_year')
 
 admin.site.unregister(Group)
