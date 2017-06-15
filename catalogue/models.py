@@ -26,7 +26,7 @@ class Actor(models.Model):
 
 
 class Genre(models.Model):
-    name = models.CharField(max_length=100, verbose_name='genero')
+    name = models.CharField(max_length=100, verbose_name='genero', unique=True)
 
     class Meta:
         verbose_name_plural = 'generos'
