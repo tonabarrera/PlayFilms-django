@@ -8,6 +8,21 @@
     {% endif %}
   {% endif %}
   <div class="container">
+    <div class="form-order">
+      <form method="get" action="{% url 'catalogue:content' %}">
+        <select class="opciones" name="orden">
+          <option value="title" selected>Nombre</option>
+          <option value="id">Fecha de subida</option>
+          <option value="score">Puntuacion</option>
+          <option value="genre" >Genero</option>
+        </select>
+        <select class="opciones" name="filtro">
+          <option value="1" selected>Ascendente</option>
+          <option value="2">Descendente</option>
+        </select>
+        <input type="submit" value="Ordenar" class="btn btn-primary"/>
+      </form>
+    </div>
     <div class="wrap-flex">
       {% for element in catalogue %}
         <div class="elemento">

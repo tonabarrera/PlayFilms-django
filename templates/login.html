@@ -11,43 +11,34 @@
   <script src="{% static 'js/bootstrap.min.js' %}"></script>
 </head>
 <body>
-<div class="container">
-  <div class="row main">
-    <div class="panel-heading">
-      <div class="panel-title text-center">
-        <h1 class="title">PlayFilms</h1>
-        <hr/>
-      </div>
-    </div>
-    <div class="main-login main-center">
-      <div class="panel-heading">
-        <div class="panel-title text-center">
-          <h2 class="title">Login</h2>
+<div class="contenedor">
+  <section class="fotoInicio">
+  <h1 class="page-header">PlayFilms</h1>
+  <div class="login-container">
+    <form action="" method="post" class="form-horizontal">
+      {% for error in form.non_field_errors %}
+        <div class="alert alert-danger">
+          <strong>{{ error }}</strong>
         </div>
-      </div>
-      <form action="" method="post" class="form-horizontal">
-        {% for error in form.non_field_errors %}
-          <div class="alert alert-danger">
-            <strong>{{ error }}</strong>
+      {% endfor %}
+      {% csrf_token %}
+      {% for field in form %}
+        <div class="form-group">
+          <label for="{{ field.id_for_label }}" class="cols-sm-2 control-label">{{ field.label }}</label>
+          <div class="cols-md-10">
+            <input class="form-control" id="{{ field.id_for_label }}" name="{{ field.html_name }}"
+                   type="{{ field.field.widget.input_type }}" required maxlength="{{ field.field.max_length }}"/>
           </div>
-        {% endfor %}
-        {% csrf_token %}
-        {% for field in form %}
-          <div class="form-group">
-            <label for="{{ field.id_for_label }}" class="cols-sm-2 control-label">{{ field.label }}</label>
-            <div class="cols-md-10">
-              <input class="form-control" id="{{ field.id_for_label }}" name="{{ field.html_name }}"
-                     type="{{ field.field.widget.input_type }}" required maxlength="{{ field.field.max_length }}"/>
-            </div>
-          </div>
-        {% endfor %}
-        <div class="inline-group">
-          <input type="submit" value="Login" class="btn btn-primary login-button"/> o <a href="{% url 'user:signup' %}">registrate</a>
         </div>
-      </form>
-      <p class="text-center"><a href="{% url 'user:reset' %}">Recuperar contraseña</a></p>
-    </div>
+      {% endfor %}
+      <div class="inline-group acciones">
+        <input type="submit" value="Iniciar Sesión" class="btn btn-primary login-button"/> o <a href="{% url 'user:signup' %}">registrate</a>
+      </div>
+    </form>
+    <p class="text-center text-recuperar"><a href="{% url 'user:reset' %}">Recuperar contraseña</a></p>
   </div>
+</section>
 </div>
+
 </body>
 </html>

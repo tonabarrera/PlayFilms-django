@@ -87,7 +87,7 @@
           <input type="submit" id="submit-favorito" value="{{ data.fav_submit }}" class="btn {{ data.class_fav }}">
         </form>
         <form action="{% url 'catalogue:puntuar' %}" method="GET" id="puntuar">
-          <input type="number" min="0" max="10" id="calificacion" required>
+          <input type="number" min="0" max="10" id="calificacion" value="{{ data.mi_puntaje }}" required>
           <input type="text" value="{{ serie.id }}" id="calificacion-id" hidden>
           <input type="submit" value="Calificar" class="btn btn-success">
         </form>

@@ -45,11 +45,9 @@ input::-webkit-input-placeholder {
 }
 
 .main-center{
-    margin-top: 30px;
     margin: 0 auto;
     max-width: 400px;
     padding: 40px 40px;
-
 }
 
 .login-button{
@@ -61,4 +59,37 @@ input::-webkit-input-placeholder {
 .login-register{
     font-size: 1.2rem;
     text-align: center;
+}
+
+.fotoInicio{
+    background-image: url('../images/fondo.jpg');
+    background-size: cover;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-container {
+    max-width: 300px;
+}
+
+.text-recuperar > a{
+    color:white;
+    margin-top: .5em;
+}
+
+.acciones {
+    color: white;
+}
+
+.acciones > a {
+    color: white;
+}
+
+div.login-container {
+    max-width: 300px;
+    width: 300px;
 }

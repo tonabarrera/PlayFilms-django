@@ -57,6 +57,27 @@ def content_list(request):
                                              'parametro': content['parametro']})
 
 
+class ContentListView(PremiumRequiredMixin, LoginRequiredMixin, ListView):
+    model = Content
+    context_object_name = 'catalogue'
+    template_name = 'catalogo.html'
+    login_url = '/user/login'
+
+    def get_queryset(self):
+        order = self.request.GET.get('orden', 'title')
+        filtro = int(self.request.GET.get('filtro', 1))
+        if filtro == 1:
+            queryset = self.model.objects.order_by(order)
+        else:
+            queryset = self.model.objects.order_by(order).reverse()
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super(ContentListView, self).get_context_data(**kwargs)
+        data = cargar_info_usuario(self.request)
+        context['data'] = data
+        return context
+
 @login_required(login_url='/user/login/')
 @premium_required
 def movies_view(request):
